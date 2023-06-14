@@ -1,0 +1,81 @@
+.view-user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 1000px; /* Increase the width if needed */
+    margin: 0 auto;
+    padding: 60px; /* Increase the padding if needed */
+    background-color: #f2f2f2;
+    border-radius: 20px; /* Increase the border-radius if needed */
+  }
+  
+  .view-user-heading {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  
+  .view-user-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .view-user-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px; /* Increase the width if needed */
+    height: 200px; /* Increase the height if needed */
+    border: none;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    overflow-wrap: break-word;
+    text-align: center;
+  }
+  
+  .view-user-button + .view-user-button {
+    margin-left: 40px; /* Increase the margin for more spacing between buttons */
+  }
+  
+  .view-user-button:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .view-user-icon {
+    font-size: 80px; /* Increase the font-size if needed */
+    color: #333333;
+  }
+  
+  .view-user-label {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #555555;
+  }
+  
+  .back-button-left {
+    position: initial;
+    top: 10px;
+    left: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4e71d2;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .view-user-container {
+    position: relative;
+  }
+  
+  .view-user-content {
+    position: relative;
+  }
+  

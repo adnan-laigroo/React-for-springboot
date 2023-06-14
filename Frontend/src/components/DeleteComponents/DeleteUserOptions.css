@@ -1,0 +1,80 @@
+.edit-user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 500px; /* Increase the width */
+  margin: 0 auto;
+  padding: 60px; /* Increase the padding */
+  background-color: #f2f2f2;
+  border-radius: 20px; /* Increase the border-radius */
+}
+
+.edit-user-heading {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.edit-user-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.edit-user-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px; /* Increase the width */
+  height: 200px; /* Increase the height */
+  border: none;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+.edit-user-button + .edit-user-button {
+  margin-left: 40px; /* Increase the margin for more spacing between buttons */
+}
+
+.edit-user-button:hover {
+  background-color: #f2f2f2;
+}
+
+.edit-user-icon {
+  font-size: 80px; /* Increase the font-size */
+  color: #333333;
+}
+
+.edit-user-label {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #555555;
+}
+
+.back-button-left {
+  position: initial;
+  top: 10px;
+  left: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4e71d2;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-user-container {
+  position: relative;
+}
+
+.edit-user-content {
+  position: relative;
+}

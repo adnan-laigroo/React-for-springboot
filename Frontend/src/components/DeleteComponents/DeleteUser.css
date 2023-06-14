@@ -1,0 +1,103 @@
+.delete-user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.delete-user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+}
+
+.delete-user-form h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.user-form-group {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.user-form-group label {
+  font-size: 14px;
+  color: #555;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.user-form-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #ff0000;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  color: green;
+  margin-bottom: 10px;
+}
+
+.success-icon {
+  margin-right: 5px;
+}
+
+.back-button-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.back-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #bbb;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #999;
+}
+
+.back-button-text {
+  font-size: 14px;
+}

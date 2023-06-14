@@ -1,0 +1,112 @@
+.add-patient-form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+h3 {
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+}
+
+.success-animation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.success-icon {
+  color: green;
+  font-size: 24px;
+  margin-right: 5px;
+}
+
+.success-message {
+  color: green;
+}
+
+.add-patient-form {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.address-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.address-field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.address-field label {
+  margin-right: 10px;
+}
+
+.address-field input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.reset-button,
+.submit-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.reset-button {
+  background-color: #ccc;
+  color: #fff;
+  margin-right: 10px;
+}

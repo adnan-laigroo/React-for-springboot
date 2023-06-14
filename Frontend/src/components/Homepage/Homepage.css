@@ -1,0 +1,237 @@
+/* Body styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('blur-hospital.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Header styles */
+header {
+  background-color: #005d9f;
+  color: #ffffff;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Navigation menu styles */
+nav {
+  background-color: #005d9f;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 10px;
+}
+
+nav ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 5px;
+}
+
+nav ul li a.active {
+  font-weight: bold;
+}
+
+/* Content section styles */
+section {
+  padding: 20px;
+}
+
+section h2 {
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+
+/* Session and login button styles */
+#session {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  background-color: #95cf10af;
+  padding: 12px 24px;
+  transition: background-color 0.3s ease;
+}
+
+#session button {
+  background-color: rgb(128, 128, 128);
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+#session button:hover {
+  background-color: rgb(0, 79, 128);
+  transform: translateY(-2px);
+}
+
+#loginButton {
+  background-color: #0059ff;
+}
+
+#loginButton:hover {
+  background-color: #00c167;
+}
+
+#registerButton {
+  background-color: #ff9900;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+#registerButton:hover {
+  background-color: #e68a00;
+  transform: translateY(-2px);
+}
+
+nav ul li a.active {
+  text-decoration: underline;
+}
+
+.back-button {
+  margin-bottom: 10px;
+  background-color: #ccc;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.back-button-container {
+  margin-bottom: 10px;
+}
+
+.back-button:hover {
+  background-color: maroon;
+}
+
+/* Information section styles */
+#information {
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+#information p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Login form */
+form.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form.login-form label {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+/* Form login */
+section.form-section {
+  text-align: center;
+}
+
+section.form-section h1 {
+  margin-bottom: 16px;
+  display: block;
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+
+section.form-section button.back-button {
+  background-color: #8a1b21;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-right: 16px;
+  display: flex;
+}
+
+section.form-section button.back-button:hover {
+  background-color: #721c24;
+}
+
+section.form-section form.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+}
+
+section.form-section form.login-form label {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+section.form-section form.login-form input[type="text"],
+section.form-section form.login-form input[type="password"] {
+  width: 300px;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+section.form-section form.login-form button {
+  width: 150px;
+  padding: 8px;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-inline-start: 10px;
+}
+
+section.form-section form.login-form button.reset-button {
+  background-color: #dc3545;
+  margin-inline-end: 100px;
+}
+
+section.form-section form.login-form button:hover {
+  background-color: #45a049;
+}
+
+section.form-section form.login-form button.reset-button:hover {
+  background-color: #c82333;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
