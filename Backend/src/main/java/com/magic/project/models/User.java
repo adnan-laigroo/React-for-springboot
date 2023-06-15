@@ -3,12 +3,14 @@ package com.magic.project.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 public class User {
 	@Id
 	@NotBlank(message = "Username is required")
+	@Email(message = "Email ")
 	private String username;
 
 	@NotBlank(message = "Password is required")

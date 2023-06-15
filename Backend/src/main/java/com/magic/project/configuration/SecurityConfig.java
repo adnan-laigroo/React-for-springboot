@@ -27,9 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http.csrf();
+    	http.csrf().disable();
 //    	http.cors();
-    	http
+   	http
         .cors()
             .and()
         .authorizeRequests()
@@ -45,9 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/hospital/patient/**").hasAnyRole("Doctor", "Receptionist", "Admin")
         .antMatchers("/hospital/appointment/**").hasAnyRole("Doctor", "Receptionist", "Admin")
             // Configure your request mappings and authorization rules
-//            .anyRequest().authenticated()
-//            .and()
-//        .httpBasic();
+            .anyRequest().fullyAuthenticated()
+            .and().httpBasic();
 //        http.authorizeRequests()
 //            .antMatchers("/hospital/doctor/**").hasAnyRole("Admin")
 //            .antMatchers(HttpMethod.POST, "/hospital/doctor/add", "/hospital/receptionist/add").hasRole("Admin")
@@ -60,9 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers("/hospital/receptionist/**").hasAnyRole("Admin")
 //            .antMatchers("/hospital/patient/**").hasAnyRole("Doctor", "Receptionist", "Admin")
 //            .antMatchers("/hospital/appointment/**").hasAnyRole("Doctor", "Receptionist", "Admin")
-            .anyRequest().fullyAuthenticated()
-            .and()
-            .httpBasic();
+//            .anyRequest().fullyAuthenticated()
+//            .and()
+//            .httpBasic();
     }
 
     @Override

@@ -19,4 +19,6 @@ public interface UserService extends UserDetailsService {
 	org.springframework.security.core.userdetails.User loadUserByUsername(String username)
 			throws UsernameNotFoundException;
 
+	String getUserRole(String username);
+
 }

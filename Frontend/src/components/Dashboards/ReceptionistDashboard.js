@@ -10,7 +10,7 @@ import UpdateAppointmentForm from '../EditComponents/Appointment/UpdateAppointme
 import AddPatientForm from '../Add_Registration_Forms/Patient/AddPatientForm';
 import UpdatePatientForm from '../EditComponents/Patient/UpdatePatientForm';
 
-const ReceptionistDashboard = ({ handleLogout }) => {
+const ReceptionistDashboard = ({ handleLogout, encodedCredentials, username}) => {
   const [currentDateTime, setCurrentDateTime] = useState('');
   const [displayedComponent, setDisplayedComponent] = useState(null);
   const [optionsVisible, setOptionsVisible] = useState(true);
@@ -118,9 +118,9 @@ const ReceptionistDashboard = ({ handleLogout }) => {
       {displayedComponent === 'appointments' && <ViewAppointments handleBack={handleBack} />}
       {displayedComponent === 'update-appointment' && <UpdateAppointmentForm handleBack={handleBack} />}
       {displayedComponent === 'patients' && <ViewPatientList handleBack={handleBack} />}
-      {displayedComponent === 'password' && <UpdatePassword handleBack={handleBack} />}
+      {displayedComponent === 'password' && <UpdatePassword username={username} encodedCredentials={encodedCredentials} handleBack={handleBack} />}
       {displayedComponent === 'addPatient' && <AddPatientForm handleBack={handleBack} />}
-      {displayedComponent === 'updatePatient' && <UpdatePatientForm handleBack={handleBack} />}
+      {displayedComponent === 'updatePatient' && <UpdatePatientForm encodedCredentials={encodedCredentials} handleBack={handleBack} handleLogout={handleLogout} />}
     </div>
   );
 };

@@ -1,0 +1,11 @@
+.login-error-message {
+    display: flex;
+    align-items: center;
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .login-error-icon {
+    margin-right: 5px;
+  }
+  

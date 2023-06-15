@@ -6,7 +6,7 @@ import ViewAppointments from '../ViewComponents/Patient_Appointment/ViewAppointm
 import ViewPatientList from '../ViewComponents/Patient_Appointment/ViewPatientList';
 import UpdatePassword from '../EditComponents/Password/UpdatePassword';
 
-const DoctorDashboard = ({ handleLogout }) => {
+const DoctorDashboard = ({ handleLogout, encodedCredentials,username }) => {
   const [currentDateTime, setCurrentDateTime] = useState('');
   const [displayedComponent, setDisplayedComponent] = useState(null);
   const [optionsVisible, setOptionsVisible] = useState(true);
@@ -95,9 +95,9 @@ const DoctorDashboard = ({ handleLogout }) => {
     </button>
       )}
       </div>
-      {displayedComponent === 'appointments' && <ViewAppointments handleBack={handleBack} />}
-      {displayedComponent === 'patients' && <ViewPatientList handleBack={handleBack} />}
-      {displayedComponent === 'password' && <UpdatePassword handleBack={handleBack} />}
+      {displayedComponent === 'appointments' && <ViewAppointments encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'patients' && <ViewPatientList  encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'password' && <UpdatePassword username={username} encodedCredentials={encodedCredentials} handleBack={handleBack} />}
     </div>
   );
 };

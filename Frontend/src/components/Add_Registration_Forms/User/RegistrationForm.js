@@ -49,16 +49,18 @@ const RegistrationForm = ({ handleBack }) => {
       formData.speciality = formValues.speciality;
     }
 
-    fetch((API_URL + endpoint), {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + btoa('Admin:Admin@1234'));
+    headers.append('Content-Type', 'application/json');
+
+    fetch(API_URL + endpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: headers,
       body: JSON.stringify(formData),
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Error registering user');
+          throw new Error('Response Error registering user');
         }
         return response.json();
       })
@@ -70,7 +72,7 @@ const RegistrationForm = ({ handleBack }) => {
         setFormValues(initialFormValues);
       })
       .catch((error) => {
-        console.error('Error registering user:', error);
+        console.error('Catch Error registering user:', error);
         setIsSubmitting(false);
         // Handle error or display an error message
       });

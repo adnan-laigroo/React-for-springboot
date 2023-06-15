@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "http://localhost:3000")
 @RequestMapping("hospital/patient")
 public class PatientController {
 	@Autowired
@@ -40,7 +40,7 @@ public class PatientController {
 	}
 
 	// get list of all Patients
-	@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "http://localhost:3000")
+	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/list")
 	public ResponseEntity<List<Patient>> getAllPatient() {
 		List<Patient> patients = patServ.getPatientList();

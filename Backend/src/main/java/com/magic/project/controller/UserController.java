@@ -31,5 +31,11 @@ public class UserController {
 		List<User> users = userServ.getUserList();
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
+	// get list of all user
+		@GetMapping("/role/{username}")
+		public ResponseEntity<String> getUserRoleByUserName(@PathVariable @Valid String username) {
+		String userRole = userServ.getUserRole(username);
+		return ResponseEntity.status(HttpStatus.OK).body(userRole);
+		}
 
 }

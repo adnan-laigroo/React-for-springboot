@@ -66,4 +66,9 @@ public class UserServiceImplementation implements UserService {
 		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
 	}
 
+	@Override
+	public String getUserRole(@Valid String username) {
+		return userRepo.findRoleByUsername(username);
+	}
+
 }

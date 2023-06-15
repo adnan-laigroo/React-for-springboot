@@ -1,42 +1,71 @@
 import React, { useState } from 'react';
+import { FaExclamationCircle } from 'react-icons/fa';
 import ReceptionistDashboard from '../Dashboards/ReceptionistDashboard';
 import DoctorDashboard from '../Dashboards/DoctorDashboard';
-    const LoginForm = ({handleBackButtonClick}) => {
+
+const LoginForm = ({ handleBackButtonClick }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('');
+  const [loginError, setLoginError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [encodedCredentials, setEncodedCredentials] = useState('');
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    // Perform authentication and validation logic here
-    // Example: Check if the username and password are valid
-
-    if (username === 'doctor' && password === 'password') {
-      // Redirect to the doctor dashboard
-      setLoggedIn(true);
-      setUserRole('Doctor');
-    } else if (username === 'receptionist' && password === 'password') {
-      // Redirect to the receptionist dashboard
-      setLoggedIn(true);
-      setUserRole('Receptionist');
+    if (!username || !password) {
+      setLoginError(true);
+      setErrorMessage('Please enter a username and password.');
+      return;
     }
+
+    const credentials = `${username}:${password}`;
+    const encodedCredentials = btoa(credentials); // Encode credentials in Base64
+    setEncodedCredentials(encodedCredentials);
+
+    fetch(`http://localhost:8080/hospital/user/role/${username}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Basic ' + encodedCredentials,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText); // Throw error with the error message from the backend
+        }
+        return response.text(); // Read the response as text
+      })
+      .then((role) => {
+        if (role === 'Doctor') {
+          setLoggedIn(true);
+          setUserRole('Doctor');
+        } else if (role === 'Receptionist') {
+          setLoggedIn(true);
+          setUserRole('Receptionist');
+        }
+      })
+      .catch((error) => {
+        console.error('Error retrieving role:', error);
+        setLoginError(true);
+        setErrorMessage('Wrong username or password');
+      });
   };
 
   const handleLogout = () => {
     setLoggedIn(false);
     setUserRole('');
   };
+  const handleLogoutClick = () => {
+    handleLogout(); // Call the handleLogout function provided as prop
+  };
   if (loggedIn) {
     if (userRole === 'Doctor') {
-      return (
-        <DoctorDashboard handleLogout={handleLogout} />
-      );
+      return <DoctorDashboard handleLogout={handleLogoutClick}  encodedCredentials={encodedCredentials} username={username}/>;
     } else if (userRole === 'Receptionist') {
-      return (
-        <ReceptionistDashboard handleLogout={handleLogout} />
-      );
+      return <ReceptionistDashboard handleLogout={handleLogoutClick} encodedCredentials={encodedCredentials} username={username} />;
     }
   }
 
@@ -57,6 +86,7 @@ import DoctorDashboard from '../Dashboards/DoctorDashboard';
             name="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -67,14 +97,23 @@ import DoctorDashboard from '../Dashboards/DoctorDashboard';
             name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <div>
           <button type="reset" className="reset-button">
             Reset
           </button>
-          <button type="submit">Sign In</button>
+          <button type="submit" className="submit-button">
+            Sign In
+          </button>
         </div>
+        {loginError && (
+          <div className="error-message">
+            <FaExclamationCircle className="error-icon" />
+            {errorMessage}
+          </div>
+        )}
       </form>
     </section>
   );

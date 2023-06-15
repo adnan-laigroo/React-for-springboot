@@ -3,13 +3,18 @@ import { FaCheck, FaClock } from 'react-icons/fa';
 import './tableStyle.css'; // Import the CSS file
 import API_URL from '../../../config';
 
-const ViewAppointments = ({ handleBack }) => {
+const ViewAppointments = ({ encodedCredentials, handleBack }) => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch appointments from the API
-    fetch(API_URL + '/hospital/appointment/list')
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+    fetch(API_URL + '/hospital/appointment/list', {
+      method: 'GET',
+      headers: headers,
+    })
       .then((response) => response.json())
       .then((data) => {
         // Update state with fetched appointments
@@ -36,17 +41,21 @@ const ViewAppointments = ({ handleBack }) => {
 
   const handleUpdateStatus = (appointmentId) => {
     // Send API request to update the appointment status
-    fetch(`http://localhost:8080/hospital/appointment/update/${appointmentId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+    headers.append('Content-Type', 'application/json');
+    fetch(API_URL + `/hospital/appointment/update/status/${appointmentId}`, {
+      method: 'PATCH',
+      headers: headers,
       body: JSON.stringify({ appointmentStatus: 'Done' }),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then(() => {
         // Fetch the updated list of appointments
-        fetch('http://localhost:8080/hospital/appointment/list')
+        fetch(API_URL + '/hospital/appointment/list', {
+          method: 'GET',
+          headers: headers,
+        })
           .then((response) => response.json())
           .then((data) => {
             // Update state with the fetched appointments
@@ -126,7 +135,6 @@ const ViewAppointments = ({ handleBack }) => {
           ) : (
             <p>No appointments found.</p>
           )}
-
         </div>
       )}
     </div>
