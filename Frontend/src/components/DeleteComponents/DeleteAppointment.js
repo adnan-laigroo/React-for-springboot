@@ -4,69 +4,63 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './DeleteUser.css';
 import API_URL from '../../config';
 
-const DeleteAappointment = ({ handleBack }) => {
+const DeleteAppointment = ({ handleBack, encodedCredentials }) => {
   const [apId, setApId] = useState('');
-  const [patId, setPatId] = useState('');
-  const [bloodGroup, setBloodGroup] = useState('');
-  const [docId, setDocId] = useState('');
-  const [appointmentDate, setAppointmentDate] = useState('');
-  const [appointmentTime, setAppointmentTime] = useState('');
-  const [appointmentStatus, setAppointmentStatus] = useState('');
+  const [appointmentData, setAppointmentData] = useState(null);
   const [error, setError] = useState('');
-  const [initialLoad, setInitialLoad] = useState(true);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const [confirmed, setConfirmed] = useState(false); // Confirmation state
+  const [confirmed, setConfirmed] = useState(false);
 
   useEffect(() => {
-    if (!initialLoad) {
-      // Fetch doctor details based on email
-      if (apId) {
-        fetch(API_URL + `/hospital/appointment/get/${apId}`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('Error fetching appointment details');
-            }
-            return response.json();
-          })
-          .then((data) => {
-            const {
-              patId,
-              bloodGroup,
-              docId,
-              appointmentDate,
-              appointmentTime,
-              appointmentStatus,
-            } = data;
-            setPatId(patId);
-            setBloodGroup(bloodGroup);
-            setDocId(docId);
-            setAppointmentDate(appointmentDate);
-            setAppointmentTime(appointmentTime);
-            setAppointmentStatus(appointmentStatus);
-            setError('');
-          })
-          .catch((error) => {
-            console.error('Error fetching appointment details:', error);
-            setError('Failed to fetch appointment details. Please try again.');
-          });
-      }
-    } else {
-      setInitialLoad(false);
+    if (!apId) {
+      setAppointmentData(null);
+      return;
     }
-  }, [apId, initialLoad]);
+
+    fetchAppointmentDetails();
+  }, [apId]);
+
+  const fetchAppointmentDetails = () => {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+
+    fetch(`${API_URL}/hospital/appointment/get/${apId}`, {
+      headers: headers
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error fetching appointment details');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setAppointmentData(data);
+        setError('');
+      })
+      .catch((error) => {
+        console.error('Error fetching appointment details:', error);
+        setError('Failed to fetch appointment details. Please try again.');
+      });
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    // Check if confirmed before deleting
     if (!confirmed) {
       setError('Please confirm deletion by checking the box.');
       return;
     }
 
-    // Send API request to delete the doctor
-    fetch(`http://localhost:8080/hospital/appointment/delete/${apId}`, {
+    deleteAppointment();
+  };
+
+  const deleteAppointment = () => {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+
+    fetch(`${API_URL}/hospital/appointment/delete/${apId}`, {
       method: 'DELETE',
+      headers: headers
     })
       .then((response) => {
         if (!response.ok) {
@@ -83,18 +77,12 @@ const DeleteAappointment = ({ handleBack }) => {
 
   const handleApIdChange = (e) => {
     setApId(e.target.value);
-    setAppointmentDate('');
-    setAppointmentStatus('');
-    setAppointmentTime('');
-    setBloodGroup('');
-    setDocId('');
-    setPatId('');
-    setError('');
+    setAppointmentData(null);
   };
 
   const handleCheckboxChange = (e) => {
     setConfirmed(e.target.checked);
-    setError(''); // Clear any error messages when checkbox state changes
+    setError('');
   };
 
   return (
@@ -106,8 +94,6 @@ const DeleteAappointment = ({ handleBack }) => {
       </div>
       <h3>Delete Appointment</h3>
       <form className="delete-user-form" onSubmit={handleFormSubmit}>
-
-
         <div className="user-form-group">
           <label htmlFor="apId">Appointment ID:</label>
           <input
@@ -119,7 +105,7 @@ const DeleteAappointment = ({ handleBack }) => {
             onChange={handleApIdChange}
           />
         </div>
-        {patId && (
+        {appointmentData && (
           <>
             <div className="user-form-group">
               <label htmlFor="patId">Patient ID:</label>
@@ -127,40 +113,7 @@ const DeleteAappointment = ({ handleBack }) => {
                 type="text"
                 id="patId"
                 name="patId"
-                value={patId}
-                className="input-field"
-                readOnly
-              />
-            </div>
-            <div className="user-form-group">
-              <label htmlFor="bloodGroup">Blood Group:</label>
-              <input
-                type="text"
-                id="bloodGroup"
-                name="bloodGroup"
-                value={bloodGroup}
-                className="input-field"
-                readOnly
-              />
-            </div>
-            <div className="user-form-group">
-              <label htmlFor="phoneNo">Doctor Id:</label>
-              <input
-                type="text"
-                id="docId"
-                name="docId"
-                value={docId}
-                className="input-field"
-                readOnly
-              />
-            </div>
-            <div className="user-form-group">
-              <label htmlFor="appointmentDate">appointment Date:</label>
-              <input
-                type="date"
-                id="appointmentDate"
-                name="appointmentDate"
-                value={appointmentDate}
+                value={appointmentData.patId}
                 className="input-field"
                 readOnly
               />
@@ -168,10 +121,10 @@ const DeleteAappointment = ({ handleBack }) => {
             <div className="user-form-group">
               <label htmlFor="appointmentTime">Appointment Time:</label>
               <input
-                type="time"
+                type="text"
                 id="appointmentTime"
                 name="appointmentTime"
-                value={appointmentTime}
+                value={appointmentData.appointmentTime}
                 className="input-field"
                 readOnly
               />
@@ -182,14 +135,14 @@ const DeleteAappointment = ({ handleBack }) => {
                 type="text"
                 id="appointmentStatus"
                 name="appointmentStatus"
-                value={appointmentStatus}
+                value={appointmentData.appointmentStatus}
                 className="input-field"
                 readOnly
               />
             </div>
           </>
         )}
-        <div className="user-form-group">
+       <div className="user-form-group">
           <label htmlFor="confirmCheckbox">
             <input
               type="checkbox"
@@ -201,6 +154,7 @@ const DeleteAappointment = ({ handleBack }) => {
             Confirm deletion
           </label>
         </div>
+        
         <div className="user-form-buttons">
           <button type="submit" className="delete-button">
             Delete
@@ -208,14 +162,14 @@ const DeleteAappointment = ({ handleBack }) => {
         </div>
       </form>
       {error && <p className="error-message">{error}</p>}
-      {deleteSuccess && (
-        <div className="success-message">
-          <FontAwesomeIcon icon={faCheckCircle} className="success-icon" />
-          <p>Doctor deleted successfully.</p>
-        </div>
-      )}
+        {deleteSuccess && (
+          <div className="success-message">
+            <FontAwesomeIcon icon={faCheckCircle} />
+            <p>Appointment deleted successfully.</p>
+          </div>
+        )}
     </div>
   );
 };
 
-export default DeleteAappointment;
+export default DeleteAppointment;

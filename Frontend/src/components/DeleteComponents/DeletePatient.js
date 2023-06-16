@@ -4,7 +4,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './DeleteUser.css';
 import API_URL from '../../config';
 
-const DeletePatient = ({ handleBack }) => {
+const DeletePatient = ({ handleBack, encodedCredentials }) => {
   const [patId, setPatId] = useState('');
   const [patientData, setPatientData] = useState(null);
   const [error, setError] = useState('');
@@ -21,7 +21,12 @@ const DeletePatient = ({ handleBack }) => {
   }, [patId]);
 
   const fetchPatientDetails = () => {
-    fetch(API_URL +`/hospital/patient/get/${patId}`)
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+
+    fetch(`${API_URL}/hospital/patient/get/${patId}`, {
+      headers: headers
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Error fetching patient details');
@@ -50,8 +55,12 @@ const DeletePatient = ({ handleBack }) => {
   };
 
   const deletePatient = () => {
-    fetch(`http://localhost:8080/hospital/patient/delete/${patId}`, {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+
+    fetch(`${API_URL}/hospital/patient/delete/${patId}`, {
       method: 'DELETE',
+      headers: headers
     })
       .then((response) => {
         if (!response.ok) {
@@ -77,7 +86,6 @@ const DeletePatient = ({ handleBack }) => {
   };
 
   return (
-
     <div className="delete-user-container">
       <div className="back-button-container">
         <button className="back-button" onClick={handleBack}>
@@ -86,7 +94,6 @@ const DeletePatient = ({ handleBack }) => {
       </div>
       <h3>Delete Patient</h3>
       <form className="delete-user-form" onSubmit={handleFormSubmit}>
-
         <div className="user-form-group">
           <label htmlFor="patId">Patient ID:</label>
           <input

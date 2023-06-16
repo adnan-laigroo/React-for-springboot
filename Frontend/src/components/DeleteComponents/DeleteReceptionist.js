@@ -4,43 +4,41 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './DeleteUser.css';
 import API_URL from '../../config';
 
-const DeleteReceptionist = ({ handleBack }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+const DeleteReceptionist = ({ handleBack, encodedCredentials }) => {
+  const [receptionist, setReceptionist] = useState(null);
   const [email, setEmail] = useState('');
-  const [phoneNo, setPhoneNo] = useState('');
   const [error, setError] = useState('');
-  const [initialLoad, setInitialLoad] = useState(true);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [confirmed, setConfirmed] = useState(false); // Confirmation state
 
   useEffect(() => {
-    if (!initialLoad) {
-      // Fetch receptionist details based on email
-      if (email) {
-        fetch(API_URL + `/hospital/receptionist/get/${email}`)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('Error fetching receptionist details');
-            }
-            return response.json();
-          })
-          .then((data) => {
-            const { firstName, lastName, phoneNo} = data;
-            setFirstName(firstName);
-            setLastName(lastName);
-            setPhoneNo(phoneNo);
-            setError('');
-          })
-          .catch((error) => {
-            console.error('Error fetching receptionist details:', error);
-            setError('Failed to fetch receptionist details. Please try again.');
-          });
-      }
-    } else {
-      setInitialLoad(false);
+    if (email) {
+      fetchReceptionistDetails();
     }
-  }, [email, initialLoad]);
+  }, [email]);
+
+  const fetchReceptionistDetails = () => {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+
+    fetch(`${API_URL}/hospital/receptionist/get/${email}`, {
+      headers: headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error fetching receptionist details');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setReceptionist(data);
+        setError('');
+      })
+      .catch((error) => {
+        console.error('Error fetching receptionist details:', error);
+        setError('Failed to fetch receptionist details. Please try again.');
+      });
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -51,9 +49,12 @@ const DeleteReceptionist = ({ handleBack }) => {
       return;
     }
 
-    // Send API request to delete the receptionist
-    fetch(`http://localhost:8080/hospital/receptionist/delete/${email}`, {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+
+    fetch(`${API_URL}/hospital/receptionist/delete/${email}`, {
       method: 'DELETE',
+      headers: headers,
     })
       .then((response) => {
         if (!response.ok) {
@@ -70,19 +71,18 @@ const DeleteReceptionist = ({ handleBack }) => {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setFirstName('');
-    setLastName('');
-    setPhoneNo('');
+    setReceptionist(null);
     setError('');
   };
 
   const handleCheckboxChange = (e) => {
     setConfirmed(e.target.checked);
-    setError(''); // Clear any error messages when checkbox state changes
+    setError('');
   };
 
   return (
     <div className="delete-user-container">
+      
       <h3>Delete receptionist</h3>
       <form className="delete-user-form" onSubmit={handleFormSubmit}>
         <div className="user-form-group">
@@ -96,7 +96,7 @@ const DeleteReceptionist = ({ handleBack }) => {
             onChange={handleEmailChange}
           />
         </div>
-        {firstName && (
+        {receptionist && (
           <>
             <div className="user-form-group">
               <label htmlFor="firstName">First Name:</label>
@@ -104,7 +104,7 @@ const DeleteReceptionist = ({ handleBack }) => {
                 type="text"
                 id="firstName"
                 name="firstName"
-                value={firstName}
+                value={receptionist.firstName}
                 className="input-field"
                 readOnly
               />
@@ -115,7 +115,7 @@ const DeleteReceptionist = ({ handleBack }) => {
                 type="text"
                 id="lastName"
                 name="lastName"
-                value={lastName}
+                value={receptionist.lastName}
                 className="input-field"
                 readOnly
               />
@@ -126,7 +126,7 @@ const DeleteReceptionist = ({ handleBack }) => {
                 type="number"
                 id="phoneNo"
                 name="phoneNo"
-                value={phoneNo}
+                value={receptionist.phoneNo}
                 className="input-field"
                 readOnly
               />

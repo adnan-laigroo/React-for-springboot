@@ -4,7 +4,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './DeleteUser.css';
 import API_URL from '../../config';
 
-const DeleteDoctor = ({ handleBack , encodedCredentials}) => {
+const DeleteDoctor = ({ handleBack, encodedCredentials }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,12 +18,11 @@ const DeleteDoctor = ({ handleBack , encodedCredentials}) => {
   useEffect(() => {
     if (!initialLoad) {
       // Fetch doctor details based on email
-     
       if (email) {
         const headers = new Headers();
         headers.append('Authorization', 'Basic ' + encodedCredentials);
-        fetch(API_URL +`/hospital/doctor/get/${email}`,{
-          header:headers
+        fetch(`${API_URL}/hospital/doctor/get/${email}`, {
+          headers: headers
         })
           .then((response) => {
             if (!response.ok) {
@@ -47,7 +46,7 @@ const DeleteDoctor = ({ handleBack , encodedCredentials}) => {
     } else {
       setInitialLoad(false);
     }
-  }, [email, initialLoad]);
+  }, [email, initialLoad, encodedCredentials]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -61,9 +60,9 @@ const DeleteDoctor = ({ handleBack , encodedCredentials}) => {
     // Send API request to delete the doctor
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + encodedCredentials);
-    fetch(`http://localhost:8080/hospital/doctor/delete/${email}`, {
+    fetch(`${API_URL}/hospital/doctor/delete/${email}`, {
       method: 'DELETE',
-      headers:headers
+      headers: headers
     })
       .then((response) => {
         if (!response.ok) {
@@ -134,7 +133,7 @@ const DeleteDoctor = ({ handleBack , encodedCredentials}) => {
             <div className="user-form-group">
               <label htmlFor="phoneNo">Phone Number:</label>
               <input
-                type="number"
+                type="text"
                 id="phoneNo"
                 name="phoneNo"
                 value={phoneNo}
