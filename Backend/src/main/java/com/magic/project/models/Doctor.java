@@ -18,7 +18,8 @@ public class Doctor {
 	@Email(message = "Invalid email format")
 	private String email;
 
-	@Pattern(regexp = "^[0-9]{10,}$", message = "Phone number should contain at least 10 digits")
+
+	@Pattern(regexp = "^[0-9]{10}$", message = "Phone number should contain exactly 10 digits")
 	private String phoneNo;
 
 	@Pattern(regexp = "^(Orthopedic|Gynecology|Dermatology|ENT)$", message = "Speciality must be Orthopedic, Gynecology, Dermatology or ENT specialist")

@@ -15,4 +15,6 @@ public interface DoctorService {
 
 	List<Doctor> getDoctorList();
 
+	Doctor getDoctor(@Valid String email);
+
 }

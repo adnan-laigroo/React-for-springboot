@@ -15,4 +15,6 @@ public interface ReceptionistService {
 
 	List<Receptionist> getReceptionistList();
 
+	Receptionist getReceptionist(@Valid String email);
+
 }

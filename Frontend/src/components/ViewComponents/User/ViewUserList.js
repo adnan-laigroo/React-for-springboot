@@ -5,7 +5,7 @@ import './CSS/ViewUser.css'; // Import the updated CSS file
 import ViewDoctors from './ViewDoctors';
 import ViewReceptionists from './ViewReceptionists';
 
-const UserOptions = ({ handleOptionClick, handleBack }) => {
+const UserOptions = ({ handleOptionClick, handleBack}) => {
   return (
     <div>
       <button className="back-button-left" onClick={handleBack}>
@@ -31,7 +31,7 @@ const UserOptions = ({ handleOptionClick, handleBack }) => {
   );
 };
 
-const ViewUserList = ({ handleBack }) => {
+const ViewUserList = ({ handleBack, encodedCredentials  }) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [optionsVisible, setOptionsVisible] = useState(true);
 
@@ -55,9 +55,9 @@ const ViewUserList = ({ handleBack }) => {
             <span className="back-button-text">Back</span>
           </button>
           {selectedOption === 'doctor' ? (
-            <ViewDoctors handleBack={handleBack} />
+            <ViewDoctors handleBack={handleBack} encodedCredentials= {encodedCredentials} />
           ) : (
-            <ViewReceptionists handleBack={handleBack} />
+            <ViewReceptionists handleBack={handleBack} encodedCredentials= {encodedCredentials} />
           )}
         </div>
       )}

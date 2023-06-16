@@ -4,7 +4,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './UpdatePatientForm.css';
 import API_URL from '../../../config';
 
-const UpdatePatientForm = ({ handleBack }) => {
+const UpdatePatientForm = ({ encodedCredentials, handleBack }) => {
   const [patId, setPatId] = useState('');
   const [patientData, setPatientData] = useState({
     firstName: '',
@@ -16,11 +16,16 @@ const UpdatePatientForm = ({ handleBack }) => {
   const [error, setError] = useState('');
   const [initialLoad, setInitialLoad] = useState(true);
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState([]);
 
   useEffect(() => {
     if (!initialLoad) {
       // Fetch patient details based on patId
-      fetch(API_URL + `/hospital/patient/get/${patId}`)
+      const headers = new Headers();
+      headers.append('Authorization', 'Basic ' + encodedCredentials);
+      fetch(API_URL + `/hospital/patient/get/${patId}`, {
+        headers: headers
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error('Error fetching patient details');
@@ -64,16 +69,23 @@ const UpdatePatientForm = ({ handleBack }) => {
     };
 
     // Send API request to update the patient
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+    headers.append('Content-Type', 'application/json');
     fetch(`http://localhost:8080/hospital/patient/update/${patId}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: headers,
       body: JSON.stringify(updatedPatientData),
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Error updating patient');
+          if (response.status === 400 || response.status === 404) {
+            return response.json().then((data) => {
+              throw { validationErrors: data.messages || [] };
+            });
+          } else {
+            throw new Error('Error updating patient');
+          }
         }
         return response.json();
       })
@@ -81,10 +93,17 @@ const UpdatePatientForm = ({ handleBack }) => {
         console.log('Patient Updated:', data);
         setUpdateSuccess(true);
         setError('');
+        setValidationErrors([]);
       })
       .catch((error) => {
         console.error('Error updating patient:', error);
-        setError('Failed to update patient. Please try again.');
+        if (error.validationErrors && error.validationErrors.length > 0) {
+          setError('Failed to update patient');
+          setValidationErrors(error.validationErrors);
+        } else {
+          setError('Failed to update patient. Please try again.');
+          setValidationErrors([]);
+        }
       });
   };
 
@@ -93,6 +112,18 @@ const UpdatePatientForm = ({ handleBack }) => {
       <button type="button" className="back-button" onClick={handleBack}>
         Back
       </button>
+      {error && !updateSuccess && (
+        <div className="appointment-error-message">
+          {error}
+          {validationErrors.length > 0 && (
+            <ul className="validation-errors">
+              {validationErrors.map((errorMsg, index) => (
+                <li key={index}>{errorMsg}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       <h3>Update Patient</h3>
       <form className="update-patient-form" onSubmit={handleFormSubmit}>
         <div className="form-group">
@@ -168,7 +199,6 @@ const UpdatePatientForm = ({ handleBack }) => {
           </button>
         </div>
       </form>
-      {error && <p className="error-message">{error}</p>}
       {updateSuccess && (
         <div className="success-message">
           <FontAwesomeIcon icon={faCheckCircle} className="success-icon" />

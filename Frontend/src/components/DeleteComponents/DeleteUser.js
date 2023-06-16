@@ -5,7 +5,7 @@ import './DeleteUserOptions.css';
 import DeleteDoctor from './DeleteDoctor';
 import DeleteReceptionist from './DeleteReceptionist';
 
-const UserOptions = ({ handleOptionClick, handleBack }) => {
+const UserOptions = ({ handleOptionClick, handleBack}) => {
   return (
     <div>
       <button className="back-button-left" onClick={handleBack}>
@@ -31,7 +31,7 @@ const UserOptions = ({ handleOptionClick, handleBack }) => {
   );
 };
 
-const DeleteUser = ({ handleBack }) => {
+const DeleteUser = ({ encodedCredentials , handleBack }) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [optionsVisible, setOptionsVisible] = useState(true);
 
@@ -55,9 +55,9 @@ const DeleteUser = ({ handleBack }) => {
             <span className="back-button-text">Back</span>
           </button>
           {selectedOption === 'doctor' ? (
-            <DeleteDoctor handleBack={handleBack} />
+            <DeleteDoctor handleBack={handleBack} encodedCredentials={encodedCredentials}/>
           ) : (
-            <DeleteReceptionist handleBack={handleBack} />
+            <DeleteReceptionist handleBack={handleBack} encodedCredentials={encodedCredentials} />
           )}
         </div>
       )}

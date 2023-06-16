@@ -3,63 +3,88 @@ import { FaCheck } from 'react-icons/fa';
 import './BookAppointmentForm.css';
 import API_URL from '../../../config';
 
-const BookAppointmentForm = ({ handleBack }) => {
+const BookAppointmentForm = ({ encodedCredentials, handleBack }) => {
   const [patId, setPatId] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
   const [appointmentTime, setAppointmentTime] = useState('');
   const [appointmentBooked, setAppointmentBooked] = useState(false);
+  const [validationErrors, setValidationErrors] = useState([]);
   const [error, setError] = useState('');
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
+  
     // Format appointment time to "hh:mm:ss"
     const formattedAppointmentTime = appointmentTime + ':00';
-
+  
     // Send API request to book the appointment
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+    headers.append('Content-Type', 'application/json');
     fetch(API_URL + `/hospital/appointment/add`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({      
+      headers: headers,
+      body: JSON.stringify({
         patId: patId,
         bloodGroup: bloodGroup,
-        appointmentTime: formattedAppointmentTime
+        appointmentTime: formattedAppointmentTime,
       }),
     })
       .then((response) => {
-        if (!response.ok) {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 400 || response.status === 404) {
+          // Validation error occurred
+          return response.json().then((data) => {
+            throw { validationErrors: data.messages || [] };
+          });
+        } else {
           throw new Error('Error booking appointment');
         }
-        return response.json();
       })
       .then((data) => {
         console.log('Appointment Booked:', data);
         setAppointmentBooked(true);
         setError('');
+        setValidationErrors([]);
       })
       .catch((error) => {
-        console.error('Error booking appointment:', error);
-        setError('Failed to book appointment. Please try again.');
+        if (error.validationErrors) {
+          setValidationErrors(error.validationErrors);
+          setError('Failed to book an appointment');
+        } else {
+          setError('Error booking appointment');
+          console.error('Error booking appointment:', error);
+        }
       });
   };
-
+  
   const handleReset = () => {
     setPatId('');
     setBloodGroup('');
-    setAppointmentTime(''); 
+    setAppointmentTime('');
   };
 
   return (
     <div className="book-appointment-form-container">
       <button className="back-button" onClick={handleBack}>
-            Back
-          </button>
+        Back
+      </button>
+      {error && !appointmentBooked && (
+        <div className="appointment-error-message">
+          {error}
+          {validationErrors.length > 0 && (
+            <ul className="validation-errors">
+              {validationErrors.map((errorMsg, index) => (
+                <li key={index}>{errorMsg}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       {!appointmentBooked ? (
         <div>
           <h3>Book Appointment</h3>
-          {error && <p className="error-message">{error}</p>}
           <form className="book-appointment-form" onSubmit={handleFormSubmit}>
             <div className="form-group">
               <label htmlFor="patId">Patient ID:</label>
@@ -103,7 +128,6 @@ const BookAppointmentForm = ({ handleBack }) => {
               </button>
             </div>
           </form>
-          
         </div>
       ) : (
         <div>

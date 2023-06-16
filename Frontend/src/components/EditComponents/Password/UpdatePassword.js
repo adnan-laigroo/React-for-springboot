@@ -10,7 +10,6 @@ const UpdatePasswordForm = ({ username, encodedCredentials, handleBack, handleLo
   const [validationErrors, setValidationErrors] = useState([]);
   const [error, setError] = useState('');
   const [showDialog, setShowDialog] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Initial state assuming the user is logged in
   const [dialogTimer, setDialogTimer] = useState(10); // Timer in seconds
 
   useEffect(() => {
@@ -35,6 +34,11 @@ const UpdatePasswordForm = ({ username, encodedCredentials, handleBack, handleLo
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    if (username.toLowerCase() === 'admin') {
+      setError('In - memory Admin cannot change the password');
+      return;
+    }
 
     // Send API request to update the password
     const headers = new Headers();
@@ -78,87 +82,81 @@ const UpdatePasswordForm = ({ username, encodedCredentials, handleBack, handleLo
   const handleDialogClose = () => {
     setShowDialog(false);
     handleLogout();
-    //setIsLoggedIn(false); 
+    //setIsLoggedIn(false);
     // Logout the user and render the login form
   };
 
   const handleDialogTimeout = () => {
     setShowDialog(false);
-    setIsLoggedIn(false); // Logout the user and render the login form
+    handleLogout();
+    // Logout the user and render the login form
   };
-
-  if (!isLoggedIn) {
-    return <LoginForm />;
-  }
 
   return (
     <div className="update-password-form-container">
-      <button className="back-button" onClick={handleBack}>
-        Back
-      </button>
-      {error && !passwordUpdated && (
-        <div className="password-error-message">
-          {error}
-          {validationErrors && (
-            <ul className="validation-errors">
-              {validationErrors.map((errorMsg, index) => (
-                <li key={index}>{errorMsg}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-      {showDialog && (
-        <div className="dialog">
-          <div className="dialog-content">
-            <h4>Password Changed</h4>
-            <p>Please login again.</p>
-            {dialogTimer > 0 ? (
-              <p>Press Ok to logout or else, automatically logging out in {dialogTimer} seconds...</p>
-            ) : (
-              <p>Logging out...</p>
-            )}
-            <button className="ok-button" onClick={handleDialogClose}>
-              OK
-            </button>
-          </div>
-        </div>
-      )}
+      {/* ... */}
       {!passwordUpdated ? (
         <div>
-          <h3>Change Password</h3>
+          {/* ... */}
           <form className="update-password-form" onSubmit={handleFormSubmit}>
             <div className="form-group">
               <label htmlFor="formUsername">Username:</label>
               <input value={username} className="input-field" readOnly />
             </div>
-            <div className="form-group">
-              <label htmlFor="new-password">New Password:</label>
-              <input
-                type="password"
-                id="new-password"
-                name="new-password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="input-field"
-              />
-            </div>
-            <div className="form-password-buttons">
+            {username.toLowerCase() !== 'admin' ? (
+              <div className="form-group">
+                <label htmlFor="new-password">New Password:</label>
+                <input
+                  type="password"
+                  id="new-password"
+                  name="new-password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="input-field"
+                />
+              <div className="form-password-buttons">
               <button type="reset" className="reset-button" onClick={handleReset}>
                 Reset
               </button>
-              <button type="submit" className="submit-button">
-                Update Password
-              </button>
+              {username.toLowerCase() !== 'admin' && (
+                <button type="submit" className="submit-button">
+                  Update Password
+                </button>
+              )}
             </div>
+              </div>
+              
+            ) : (
+              <div>
+              <p className="password-disabled-message">Password cannot be changed for an in-memory admin.</p>
+              <div>
+              <button type="reset" className="back-button" onClick={handleBack}>
+                Back
+              </button>
+              </div>
+              </div>
+            )}
+            
           </form>
+          {error && !passwordUpdated && (
+            <div className="password-error-message">
+              <p className="error-message">{error}</p>
+              {validationErrors && (
+                <ul className="validation-errors">
+                  {validationErrors.map((errorMsg, index) => (
+                    <li key={index} className="validation-error">{errorMsg}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
       ) : (
         <div>
-          <h3>Password Updated</h3>
-          <FaCheck className="confirm-tick" />
+          {/* ... */}
         </div>
       )}
+      {/* ... */}
     </div>
   );
 };

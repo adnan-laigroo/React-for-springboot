@@ -15,4 +15,6 @@ public interface PatientService {
 
 	List<Patient> getPatientList();
 
+	Patient getPatient(@Valid String patId);
+
 }

@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react';
 import './CSS/userTable.css'; // Import the CSS file
 import API_URL from '../../../config';
 
-const ViewReceptionists = () => {
+const ViewReceptionists = ({encodedCredentials}) => {
   const [receptionists, setReceptionists] = useState([]);
   const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
     // Fetch receptionists from the API
-    fetch(API_URL + '/hospital/receptionist/list')
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials); 
+    fetch(API_URL + '/hospital/receptionist/list',{
+      headers:headers
+    })
       .then((response) => response.json())
       .then((data) => {
         // Update state with fetched receptionists

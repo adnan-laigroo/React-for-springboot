@@ -4,7 +4,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './UpdateAppointmentForm.css';
 import API_URL from '../../../config';
 
-const UpdateAppointmentForm = ({ handleBack }) => {
+const UpdateAppointmentForm = ({ encodedCredentials, handleBack }) => {
   const [apId, setApId] = useState('');
   const [patId, setPatId] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
@@ -15,11 +15,16 @@ const UpdateAppointmentForm = ({ handleBack }) => {
   const [error, setError] = useState('');
   const [initialLoad, setInitialLoad] = useState(true);
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState([]);
 
   useEffect(() => {
     if (!initialLoad) {
       // Fetch appointment details based on apId
-      fetch(API_URL + `/hospital/appointment/get/${apId}`)
+      const headers = new Headers();
+      headers.append('Authorization', 'Basic ' + encodedCredentials);
+      fetch(API_URL + `/hospital/appointment/get/${apId}`, {
+        headers: headers
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error('Error fetching appointment details');
@@ -54,7 +59,6 @@ const UpdateAppointmentForm = ({ handleBack }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
     // Prepare updated appointment data
     const updatedAppointmentData = {
       apId: apId,
@@ -65,18 +69,25 @@ const UpdateAppointmentForm = ({ handleBack }) => {
       appointmentTime: appointmentTime,
       appointmentStatus: appointmentStatus,
     };
-
+  
     // Send API request to update the appointment
-    fetch(`http://localhost:8080/hospital/appointment/update/${apId}`, {
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+    headers.append('Content-Type', 'application/json');
+    fetch(API_URL + `/hospital/appointment/update/${apId}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: headers,
       body: JSON.stringify(updatedAppointmentData),
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Error updating appointment');
+          if (response.status === 400 || response.status === 404) {
+            return response.json().then((data) => {
+              throw { validationErrors: data.messages || [] };
+            });
+          } else {
+            throw new Error('Error updating appointment');
+          }
         }
         return response.json();
       })
@@ -84,18 +95,37 @@ const UpdateAppointmentForm = ({ handleBack }) => {
         console.log('Appointment Updated:', data);
         setUpdateSuccess(true);
         setError('');
+        setValidationErrors([]);
       })
       .catch((error) => {
         console.error('Error updating appointment:', error);
-        setError('Failed to update appointment. Please try again.');
+        if (error.validationErrors && error.validationErrors.length > 0) {
+          setError('Failed to update appointment');
+          setValidationErrors(error.validationErrors);
+        } else {
+          setError('Failed to update appointment. Please try again.');
+          setValidationErrors([]);
+        }
       });
   };
 
   return (
     <div className="update-appointment-form-container">
-        <button type="button" className="back-button" onClick={handleBack}>
-            Back
-          </button>
+      <button type="button" className="back-button" onClick={handleBack}>
+        Back
+      </button>
+      {error && !updateSuccess && (
+        <div className="appointment-error-message">
+          {error}
+          {validationErrors.length > 0 && (
+            <ul className="validation-errors">
+              {validationErrors.map((errorMsg, index) => (
+                <li key={index}>{errorMsg}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       <h3>Update Appointment</h3>
       <form className="update-appointment-form" onSubmit={handleFormSubmit}>
         <div className="form-group">
@@ -179,10 +209,9 @@ const UpdateAppointmentForm = ({ handleBack }) => {
           <button type="submit" className="submit-button">
             Update
           </button>
-        
         </div>
       </form>
-      {error && <p className="error-message">{error}</p>}
+  
       {updateSuccess && (
         <div className="success-message">
           <FontAwesomeIcon icon={faCheckCircle} className="success-icon" />
@@ -191,6 +220,6 @@ const UpdateAppointmentForm = ({ handleBack }) => {
       )}
     </div>
   );
-};
-
-export default UpdateAppointmentForm;
+  
+          }  
+export default UpdateAppointmentForm;  

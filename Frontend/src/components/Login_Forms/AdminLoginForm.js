@@ -1,29 +1,59 @@
 import React, { useState } from 'react';
 import AdminDashboard from '../Dashboards/AdminDashboard';
-    const AdminLoginForm = ({handleBackButtonClick}) => {
+import { FaExclamationCircle } from 'react-icons/fa';
+const AdminLoginForm = ({ handleBackButtonClick }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [encodedCredentials, setEncodedCredentials] = useState('');
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin') {
-      // Redirect to the doctor dashboard
-      setLoggedIn(true);
+    if (!username || !password) {
+      setLoginError(true);
+      setErrorMessage('Please enter a username and password.');
+      return;
     }
-   
+
+    const credentials = `${username}:${password}`;
+    const encodedCredentials = btoa(credentials); // Encode credentials in Base64
+    setEncodedCredentials(encodedCredentials);
+
+    fetch(`http://localhost:8080/hospital/user/authenticate`, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Basic ' + encodedCredentials,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText); // Throw error with the error message from the backend
+        }
+        return response.text(); // Read the response as text
+      })
+      .then(() => {
+        setLoggedIn(true);
+      })
+      .catch((error) => {
+        console.error('Error retrieving role:', error);
+        setLoginError(true);
+        setErrorMessage('Wrong username or password');
+      });
   };
+
 
   const handleLogout = () => {
     setLoggedIn(false);
   };
   if (loggedIn) {
-    
-      return (
-        <AdminDashboard handleLogout={handleLogout} />
-      );
-    }
-  
+    return (
+      <AdminDashboard handleLogout={handleLogout} encodedCredentials={encodedCredentials} username={username} />
+    );
+  }
+
 
   return (
     <section className="form-section">
@@ -60,6 +90,12 @@ import AdminDashboard from '../Dashboards/AdminDashboard';
           </button>
           <button type="submit">Sign In</button>
         </div>
+        {loginError && (
+          <div className="error-message">
+            <FaExclamationCircle className="error-icon" />
+            {errorMessage}
+          </div>
+        )}
       </form>
     </section>
   );

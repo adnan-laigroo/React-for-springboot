@@ -4,7 +4,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './UpdateUserForm.css';
 import API_URL from '../../../config';
 
-const UpdateReceptionist = ({ handleBack }) => {
+const UpdateReceptionist = ({ handleBack, encodedCredentials }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -12,11 +12,16 @@ const UpdateReceptionist = ({ handleBack }) => {
   const [error, setError] = useState('');
   const [initialLoad, setInitialLoad] = useState(true);
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [validationErrors, setValidationErrors] = useState([]);
 
   useEffect(() => {
     if (!initialLoad) {
       // Fetch eeceptionist details based on email
-      fetch(API_URL + `/hospital/receptionist/get/${email}`)
+      const headers = new Headers();
+      headers.append('Authorization', 'Basic ' + encodedCredentials);
+      fetch(API_URL + `/hospital/receptionist/get/${email}`,{
+        headers: headers
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error('Error fetching receptionist details');
@@ -57,32 +62,58 @@ const UpdateReceptionist = ({ handleBack }) => {
     };
 
     // Send API request to update the appointment
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+    headers.append('Content-Type', 'application/json');
     fetch(`http://localhost:8080/hospital/receptionist/update/${email}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: headers,
       body: JSON.stringify(updatedReceptionistData),
     })
-      .then((response) => {
-        if (!response.ok) {
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400 || response.status === 404) {
+          return response.json().then((data) => {
+            throw { validationErrors: data.messages || [] };
+          });
+        } else {
           throw new Error('Error updating receptionist');
         }
-        return response.json();
-      })
-      .then((data) => {
-        console.log('Receptionist Updated:', data);
-        setUpdateSuccess(true);
-        setError('');
-      })
-      .catch((error) => {
-        console.error('Error updating receptionist:', error);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log('Receptionist Updated:', data);
+      setUpdateSuccess(true);
+      setError('');
+      setValidationErrors([]);
+    })
+    .catch((error) => {
+      console.error('Error updating receptionist:', error);
+      if (error.validationErrors && error.validationErrors.length > 0) {
+        setError('Failed to update receptionist');
+        setValidationErrors(error.validationErrors);
+      } else {
         setError('Failed to update receptionist. Please try again.');
-      });
+        setValidationErrors([]);
+      }
+    });
   };
 
   return (
     <div className="update-appointment-form-container">
+      {error && !updateSuccess && (
+        <div className="appointment-error-message">
+          {error}
+          {validationErrors.length > 0 && (
+            <ul className="validation-errors">
+              {validationErrors.map((errorMsg, index) => (
+                <li key={index}>{errorMsg}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       <h3>Update Receptionist</h3>
       <form className="update-appointment-form" onSubmit={handleFormSubmit}>
         <div className="form-group">
@@ -136,7 +167,6 @@ const UpdateReceptionist = ({ handleBack }) => {
         
         </div>
       </form>
-      {error && <p className="error-message">{error}</p>}
       {updateSuccess && (
         <div className="success-message">
           <FontAwesomeIcon icon={faCheckCircle} className="success-icon" />

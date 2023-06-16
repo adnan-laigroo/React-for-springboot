@@ -114,12 +114,12 @@ const ReceptionistDashboard = ({ handleLogout, encodedCredentials, username}) =>
           </button>
         )}
       </div>
-      {displayedComponent === 'book-appointment' && <BookAppointmentForm handleBack={handleBack} />}
-      {displayedComponent === 'appointments' && <ViewAppointments handleBack={handleBack} />}
-      {displayedComponent === 'update-appointment' && <UpdateAppointmentForm handleBack={handleBack} />}
-      {displayedComponent === 'patients' && <ViewPatientList handleBack={handleBack} />}
-      {displayedComponent === 'password' && <UpdatePassword username={username} encodedCredentials={encodedCredentials} handleBack={handleBack} />}
-      {displayedComponent === 'addPatient' && <AddPatientForm handleBack={handleBack} />}
+      {displayedComponent === 'book-appointment' && <BookAppointmentForm encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'appointments' && <ViewAppointments encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'update-appointment' && <UpdateAppointmentForm encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'patients' && <ViewPatientList encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'password' && <UpdatePassword handleLogout={handleLogout} username={username} encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'addPatient' && <AddPatientForm encodedCredentials={encodedCredentials} handleBack={handleBack} />}
       {displayedComponent === 'updatePatient' && <UpdatePatientForm encodedCredentials={encodedCredentials} handleBack={handleBack} handleLogout={handleLogout} />}
     </div>
   );

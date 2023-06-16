@@ -4,7 +4,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './DeleteUser.css';
 import API_URL from '../../config';
 
-const DeleteDoctor = ({ handleBack }) => {
+const DeleteDoctor = ({ handleBack , encodedCredentials}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,8 +18,13 @@ const DeleteDoctor = ({ handleBack }) => {
   useEffect(() => {
     if (!initialLoad) {
       // Fetch doctor details based on email
+     
       if (email) {
-        fetch(API_URL +`/hospital/doctor/get/${email}`)
+        const headers = new Headers();
+        headers.append('Authorization', 'Basic ' + encodedCredentials);
+        fetch(API_URL +`/hospital/doctor/get/${email}`,{
+          header:headers
+        })
           .then((response) => {
             if (!response.ok) {
               throw new Error('Error fetching doctor details');
@@ -54,8 +59,11 @@ const DeleteDoctor = ({ handleBack }) => {
     }
 
     // Send API request to delete the doctor
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
     fetch(`http://localhost:8080/hospital/doctor/delete/${email}`, {
       method: 'DELETE',
+      headers:headers
     })
       .then((response) => {
         if (!response.ok) {

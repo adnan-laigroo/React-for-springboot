@@ -1,5 +1,6 @@
 package com.magic.project.controller;
 
+import com.magic.project.models.Appointment;
 import com.magic.project.models.Patient;
 import com.magic.project.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "http://localhost:3000")
 @RequestMapping("hospital/patient")
 public class PatientController {
 	@Autowired
@@ -34,16 +34,21 @@ public class PatientController {
 	// update a Patient by ID and Put request
 	@PutMapping("/update/{patId}")
 	public ResponseEntity<Patient> updatePatient(@Valid @PathVariable String patId,
-			@RequestBody Patient updatedPatient) {
+			@RequestBody @Valid Patient updatedPatient) {
 		Patient patient = patServ.updatePatient(updatedPatient, patId);
 		return ResponseEntity.status(HttpStatus.OK).body(patient);
 	}
 
 	// get list of all Patients
-	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/list")
 	public ResponseEntity<List<Patient>> getAllPatient() {
 		List<Patient> patients = patServ.getPatientList();
 		return ResponseEntity.status(HttpStatus.OK).body(patients);
 	}
+	// get an Appointment
+		@GetMapping("/get/{patId}")
+		public ResponseEntity<Patient> getPatient(@PathVariable @Valid String patId) {
+			Patient patient = patServ.getPatient(patId);
+			return ResponseEntity.status(HttpStatus.OK).body(patient);
+		}
 }

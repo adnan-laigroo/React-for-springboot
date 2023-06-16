@@ -50,4 +50,13 @@ public class PatientServiceImplementation implements PatientService {
 		}
 		return patients;
 	}
+
+	@Override
+	public Patient getPatient(String patId) {
+		Patient patient = patRepo.findById(patId).orElse(null);
+		if (patient == null) {
+			throw new PatientNotFoundException("No Patient with ID " + patId);
+		}
+		return patient;
+	}
 }

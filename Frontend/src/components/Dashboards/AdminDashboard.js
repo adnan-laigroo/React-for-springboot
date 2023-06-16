@@ -16,7 +16,7 @@ import DeleteUser from '../DeleteComponents/DeleteUser';
 import DeletePatient from '../DeleteComponents/DeletePatient';
 import DeleteAppointment from '../DeleteComponents/DeleteAppointment';
 
-const AdminDashboard = ({ handleLogout }) => {
+const AdminDashboard = ({ handleLogout, encodedCredentials, username }) => {
   const [currentDateTime, setCurrentDateTime] = useState('');
   const [displayedComponent, setDisplayedComponent] = useState(null);
   const [optionsVisible, setOptionsVisible] = useState(true);
@@ -168,19 +168,19 @@ const AdminDashboard = ({ handleLogout }) => {
           </button>
         )}
       </div>
-      {displayedComponent === 'addUser' && <RegistrationForm handleBack={handleBack} />}
-      {displayedComponent === 'userList' && <ViewUserList handleBack={handleBack} />}
-      {displayedComponent === 'editUser' && <EditUser handleBack={handleBack} />}
-      {displayedComponent === 'deleteUser' && <DeleteUser handleBack={handleBack} />}
-      {displayedComponent === 'book-appointment' && <BookAppointmentForm handleBack={handleBack} />}
-      {displayedComponent === 'appointments' && <ViewAppointments handleBack={handleBack} />}
-      {displayedComponent === 'update-appointment' && <UpdateAppointmentForm handleBack={handleBack} />}
-      {displayedComponent === 'deleteAppointment' && <DeleteAppointment handleBack={handleBack} />}
-      {displayedComponent === 'patients' && <ViewPatientList handleBack={handleBack} />}
-      {displayedComponent === 'password' && <UpdatePassword handleBack={handleBack} />}
-      {displayedComponent === 'addPatient' && <AddPatientForm handleBack={handleBack} />}
-      {displayedComponent === 'updatePatient' && <UpdatePatientForm handleBack={handleBack} />}
-      {displayedComponent === 'deletePatient' && <DeletePatient handleBack={handleBack} />}
+      {displayedComponent === 'addUser' && <RegistrationForm encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'userList' && <ViewUserList encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'editUser' && <EditUser encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'deleteUser' && <DeleteUser encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'book-appointment' && <BookAppointmentForm encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'appointments' && <ViewAppointments encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'update-appointment' && <UpdateAppointmentForm encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'deleteAppointment' && <DeleteAppointment encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'patients' && <ViewPatientList encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'password' && <UpdatePassword username={username} handleLogout={handleLogout} encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'addPatient' && <AddPatientForm encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'updatePatient' && <UpdatePatientForm encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'deletePatient' && <DeletePatient encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
     </div>
   );
 };

@@ -95,4 +95,22 @@
   .back-button:hover {
     background-color: #999;
   }
+  .appointment-error-message {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+  }
+  
+  .validation-errors {
+    margin-top: 5px;
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .validation-errors li {
+    color: #721c24;
+  }
   

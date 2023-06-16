@@ -2,14 +2,18 @@ import React, { useEffect, useState } from 'react';
 import './CSS/userTable.css'; // Import the CSS file
 import API_URL from '../../../config';
 
-const ViewDoctors = () => {
+const ViewDoctors = ({encodedCredentials}) => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
  
 
   useEffect(() => {
     // Fetch doctors from the API
-    fetch(API_URL + '/hospital/doctor/list')
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials); 
+    fetch(API_URL + '/hospital/doctor/list', {
+      headers:headers
+    })
       .then((response) => response.json())
       .then((data) => {
         // Update state with fetched doctors

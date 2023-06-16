@@ -42,7 +42,7 @@ public class DoctorController {
 
 	// update a doctor by ID and Put request
 	@PutMapping("/update/{email}")
-	public ResponseEntity<Doctor> updateDoctor(@Valid @PathVariable String email, @RequestBody Doctor updatedDoctor) {
+	public ResponseEntity<Doctor> updateDoctor(@Valid @PathVariable String email, @RequestBody @Valid Doctor updatedDoctor) {
 		Doctor doctor = docServ.updateDoctor(updatedDoctor, email);
 		return ResponseEntity.status(HttpStatus.OK).body(doctor);
 	}
@@ -52,6 +52,11 @@ public class DoctorController {
 	public ResponseEntity<List<Doctor>> getAllDoctor() {
 		List<Doctor> doctors = docServ.getDoctorList();
 		return ResponseEntity.status(HttpStatus.OK).body(doctors);
+	}
+	@GetMapping("/get/{email}")
+	public ResponseEntity<Doctor> getDoctor(@PathVariable @Valid String email) {
+		Doctor doctor = docServ.getDoctor(email);
+		return ResponseEntity.status(HttpStatus.OK).body(doctor);
 	}
 
 }

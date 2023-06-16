@@ -3,7 +3,7 @@ import { FaUserCheck, FaUserPlus } from 'react-icons/fa';
 import './RegistrationForm.css'; // Import the CSS file
 import API_URL from '../../../config';
 
-const RegistrationForm = ({ handleBack }) => {
+const RegistrationForm = ({ handleBack, encodedCredentials }) => {
   const initialFormValues = {
     firstName: '',
     lastName: '',
@@ -18,6 +18,8 @@ const RegistrationForm = ({ handleBack }) => {
   const [userCreated, setUserCreated] = useState(false);
   const [userRole, setUserRole] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState([]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +52,7 @@ const RegistrationForm = ({ handleBack }) => {
     }
 
     const headers = new Headers();
-    headers.append('Authorization', 'Basic ' + btoa('Admin:Admin@1234'));
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
     headers.append('Content-Type', 'application/json');
 
     fetch(API_URL + endpoint, {
@@ -59,10 +61,16 @@ const RegistrationForm = ({ handleBack }) => {
       body: JSON.stringify(formData),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error('Response Error registering user');
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 400 || response.status === 404) {
+          // Validation error occurred
+          return response.json().then((data) => {
+            throw { validationErrors: data.messages || [] };
+          });
+        } else {
+          throw new Error('Error adding a ' + formValues.role);
         }
-        return response.json();
       })
       .then((data) => {
         console.log('User registered:', data);
@@ -70,16 +78,24 @@ const RegistrationForm = ({ handleBack }) => {
         setUserRole(formValues.role);
         setIsSubmitting(false);
         setFormValues(initialFormValues);
+        setError('');
+        setValidationErrors([]);
       })
       .catch((error) => {
-        console.error('Catch Error registering user:', error);
         setIsSubmitting(false);
-        // Handle error or display an error message
+        if (error.validationErrors) {
+          setValidationErrors(error.validationErrors);
+          setError('Failed to add a ' + formValues.role);
+        } else {
+          setError('Error adding a patient');
+          console.error('Error adding a ' + formValues.role);
+        }
       });
   };
 
   const handleFormReset = () => {
     setFormValues(initialFormValues);
+    
   };
 
   return (
@@ -88,6 +104,19 @@ const RegistrationForm = ({ handleBack }) => {
         <button className="back-button" onClick={handleBack}>
           Back
         </button>
+        
+      {error && !userCreated && (
+        <div className="user-create-error-message">
+          {error}
+          {validationErrors.length > 0 && (
+            <ul className="user-create-validation-errors">
+              {validationErrors.map((errorMsg, index) => (
+                <li key={index}>{errorMsg}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       </div>
       <h1 className="register-title">Register</h1>
       <form className="register-form" onSubmit={handleFormSubmit}>

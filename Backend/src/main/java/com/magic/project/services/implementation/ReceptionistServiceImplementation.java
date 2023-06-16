@@ -51,4 +51,13 @@ public class ReceptionistServiceImplementation implements ReceptionistService {
 		return receptionists;
 	}
 
+	@Override
+	public Receptionist getReceptionist(@Valid String email) {
+		Receptionist receptionist = recepRepo.findById(email).orElse(null);
+		if (receptionist == null) {
+			throw new ReceptionistNotFoundException("No Receptionist with ID " + email);
+		}
+		return receptionist;
+	}
+
 }

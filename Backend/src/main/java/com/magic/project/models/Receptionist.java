@@ -22,7 +22,7 @@ public class Receptionist {
 	private String email;
 
 	@NotBlank(message = "Phone number cannot be blank")
-	@Pattern(regexp = "^[0-9]{10,}$", message = "Phone number should contain at least 10 digits")
+	@Pattern(regexp = "^[0-9]{10}$", message = "Phone number should contain exactly 10 digits")
 	private String phoneNo;
 
 	public String getFirstName() {

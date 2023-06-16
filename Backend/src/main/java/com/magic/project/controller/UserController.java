@@ -37,5 +37,11 @@ public class UserController {
 		String userRole = userServ.getUserRole(username);
 		return ResponseEntity.status(HttpStatus.OK).body(userRole);
 		}
+		
+	//authentication
+	@GetMapping("/authenticate")
+	public ResponseEntity<String> authenticate() {
+		return ResponseEntity.status(HttpStatus.OK).build();
+		}
 
 }

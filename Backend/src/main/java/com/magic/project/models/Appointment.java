@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
@@ -17,12 +18,14 @@ public class Appointment {
 	private String apId;
 
 	@NotBlank(message = "Patient ID cannot be blank")
+	@Pattern(regexp = "^P\\d{5}$", message = "Invalid patId format")
 	private String patId;
 
 	@NotBlank(message = "Blood group cannot be blank")
 	@Pattern(regexp = "^(O|A|B|AB)[+-]$", message = "Invalid blood group")
 	private String bloodGroup;
 
+	@Email
 	private String docId;
 
 	private LocalDate appointmentDate;

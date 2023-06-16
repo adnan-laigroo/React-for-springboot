@@ -31,7 +31,7 @@ const UserOptions = ({ handleOptionClick, handleBack }) => {
   );
 };
 
-const EditUser = ({ handleBack }) => {
+const EditUser = ({ handleBack , encodedCredentials}) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [optionsVisible, setOptionsVisible] = useState(true);
 
@@ -55,9 +55,9 @@ const EditUser = ({ handleBack }) => {
             <span className="back-button-text">Back</span>
           </button>
           {selectedOption === 'doctor' ? (
-            <UpdateDoctor handleBack={handleBack} />
+            <UpdateDoctor handleBack={handleBack} encodedCredentials= {encodedCredentials} />
           ) : (
-            <UpdateReceptionist handleBack={handleBack} />
+            <UpdateReceptionist handleBack={handleBack} encodedCredentials= {encodedCredentials} />
           )}
         </div>
       )}

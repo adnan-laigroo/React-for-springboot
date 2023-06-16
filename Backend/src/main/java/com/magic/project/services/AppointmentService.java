@@ -15,6 +15,10 @@ public interface AppointmentService {
 	
 	List<Appointment> getAppointmentList();
 
-	Appointment updateAppointmentStatus(Appointment updatedAppointment, @Valid String appId);
+	Appointment updateAppointmentStatus(@Valid Appointment updatedAppointment, @Valid String appId);
+
+	Appointment getAppointment(String appId);
+
+	
 
 }

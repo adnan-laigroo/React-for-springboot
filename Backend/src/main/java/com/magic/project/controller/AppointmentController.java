@@ -33,7 +33,7 @@ public class AppointmentController {
 	// update a Appointment by ID and Put request
 	@PutMapping("/update/{appId}")
 	public ResponseEntity<Appointment> updateAppointment(@Valid @PathVariable String appId,
-			@RequestBody Appointment updatedAppointment) {
+			@RequestBody @Valid Appointment updatedAppointment) {
 		Appointment appointment = appServ.updateAppointment(updatedAppointment, appId);
 		return ResponseEntity.status(HttpStatus.OK).body(appointment);
 	}
@@ -50,6 +50,13 @@ public class AppointmentController {
 	public ResponseEntity<Appointment> updateAppointmentStaus(@Valid @PathVariable String appId,
 			@RequestBody Appointment updatedAppointment) {
 		Appointment appointment = appServ.updateAppointmentStatus(updatedAppointment, appId);
+		return ResponseEntity.status(HttpStatus.OK).body(appointment);
+	}
+
+	// get an Appointment
+	@GetMapping("/get/{appId}")
+	public ResponseEntity<Appointment> getAppointment(@PathVariable String appId) {
+		Appointment appointment = appServ.getAppointment(appId);
 		return ResponseEntity.status(HttpStatus.OK).body(appointment);
 	}
 

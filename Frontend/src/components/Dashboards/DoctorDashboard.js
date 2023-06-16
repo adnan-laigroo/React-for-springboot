@@ -97,7 +97,7 @@ const DoctorDashboard = ({ handleLogout, encodedCredentials,username }) => {
       </div>
       {displayedComponent === 'appointments' && <ViewAppointments encodedCredentials={encodedCredentials} handleBack={handleBack} />}
       {displayedComponent === 'patients' && <ViewPatientList  encodedCredentials={encodedCredentials} handleBack={handleBack} />}
-      {displayedComponent === 'password' && <UpdatePassword username={username} encodedCredentials={encodedCredentials} handleBack={handleBack} />}
+      {displayedComponent === 'password' && <UpdatePassword handleLogout={handleLogout} username={username} encodedCredentials={encodedCredentials} handleBack={handleBack} />}
     </div>
   );
 };

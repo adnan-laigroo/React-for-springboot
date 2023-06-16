@@ -153,4 +153,13 @@ public class AppointmentServiceImplementation implements AppointmentService {
 		appRepo.save(appointment);
 		return appointment;
 	}
+
+	@Override
+	public Appointment getAppointment(String appId) {
+		Appointment appointment =  appRepo.findById(appId).orElse(null);
+		if (appointment == null) {
+			throw new AppointmentNotConfirmedException("No Appointment with ID " + appRepo);
+		}
+		return appointment;
+	}
 }

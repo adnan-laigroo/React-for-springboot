@@ -15,6 +15,7 @@ public class Patient {
 	@Id
 	@GeneratedValue(generator = "patient_sequence_generator")
 	@GenericGenerator(name = "patient_sequence_generator", strategy = "com.magic.project.models.PatientSequenceGenerator")
+	@Pattern(regexp = "^P\\d{5}$", message = "Invalid patId format")
 	private String patId;
 
 	@NotBlank(message = "First name is required")

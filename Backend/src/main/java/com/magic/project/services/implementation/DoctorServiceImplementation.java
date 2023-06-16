@@ -31,7 +31,7 @@ public class DoctorServiceImplementation implements DoctorService {
 	}
 
 	@Override
-	public Doctor updateDoctor(Doctor updatedDoctor, @Valid String email) {
+	public Doctor updateDoctor(@Valid Doctor updatedDoctor, @Valid String email) {
 		Doctor doctor = docRepo.findById(email).orElse(null);
 		if (doctor==null){
 			throw  new DoctorNotFoundException("No doctor found with ID "+email);
@@ -48,5 +48,14 @@ public class DoctorServiceImplementation implements DoctorService {
 			throw  new DoctorNotFoundException("No doctor found.");
 		}
 		return doctors;
+	}
+
+	@Override
+	public Doctor getDoctor(@Valid String email) {
+		Doctor doctor = docRepo.findById(email).orElse(null);
+		if (doctor==null){
+			throw  new DoctorNotFoundException("No doctor found with ID "+email);
+		}
+		return doctor;
 	}
 }

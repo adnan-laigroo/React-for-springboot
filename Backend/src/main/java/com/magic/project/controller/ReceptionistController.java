@@ -1,5 +1,6 @@
 package com.magic.project.controller;
 
+import com.magic.project.models.Doctor;
 import com.magic.project.models.Receptionist;
 import com.magic.project.models.User;
 import com.magic.project.models.dto.ReceptionistDto;
@@ -43,7 +44,7 @@ public class ReceptionistController {
 	// update a receptionist by ID and Put request
 	@PutMapping("/update/{email}")
 	public ResponseEntity<Receptionist> updateReceptionist(@Valid @PathVariable String email,
-			@RequestBody Receptionist updatedReceptionist) {
+			@RequestBody @Valid Receptionist updatedReceptionist) {
 		Receptionist receptionist = recepServ.updateReceptionist(updatedReceptionist, email);
 		return ResponseEntity.status(HttpStatus.OK).body(receptionist);
 	}
@@ -53,6 +54,11 @@ public class ReceptionistController {
 	public ResponseEntity<List<Receptionist>> getAllReceptionist() {
 		List<Receptionist> receptionists = recepServ.getReceptionistList();
 		return ResponseEntity.status(HttpStatus.OK).body(receptionists);
+	}
+	@GetMapping("/get/{email}")
+	public ResponseEntity<Receptionist> getDoctor(@PathVariable @Valid String email) {
+		Receptionist receptionist = recepServ.getReceptionist(email);
+		return ResponseEntity.status(HttpStatus.OK).body(receptionist);
 	}
 
 }

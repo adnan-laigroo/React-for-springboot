@@ -17,14 +17,17 @@ public class DoctorDto {
 	@NotEmpty(message = "Email is required")
 	private String email;
 
-	@Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
+
+	@Pattern(regexp = "^[0-9]{10}$", message = "Phone number should contain exactly 10 digits")
 	@NotEmpty(message = "Phone number is required")
 	private String phoneNo;
 
 	@NotEmpty(message = "Speciality is required")
+	@Pattern(regexp = "^(Orthopedic|Gynecology|Dermatology|ENT)$", message = "Speciality must be Orthopedic, Gynecology, Dermatology or ENT specialist")
 	private String speciality;
 
 	@NotEmpty(message = "Role is required")
+	@Pattern(regexp = "^(Doctor|Receptionist)$", message = "Role must be Doctor or Receptionist")
 	private String role;
 
 	@NotEmpty(message = "Password is required")
