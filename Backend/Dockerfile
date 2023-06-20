@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the executable JAR file into the container
 COPY target/HospitalManagementSystem-0.0.1-SNAPSHOT.jar app.jar
 
+# Copy files from local machine's volume to a directory inside the container
+COPY /path/on/local/machine /path/inside/container
+
 # Expose the port that your Spring Boot application listens on (change the port number if needed)
 EXPOSE 8080
 
