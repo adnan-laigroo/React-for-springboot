@@ -1,17 +1,15 @@
-# Use an OpenJDK base image
-FROM openjdk:8-jdk-alpine
+#
+# Build stage
+#
+FROM maven:3.8.2-openjdk-8 AS build
+COPY . .
+RUN mvn clean package -Pprod -DskipTests
 
-# Set the working directory inside the container
-WORKDIR /app
-
-# Copy the executable JAR file into the container
-COPY target/HospitalManagementSystem-0.0.1-SNAPSHOT.jar app.jar
-
-# Copy files from local machine's volume to a directory inside the container
-COPY /path/on/local/machine /path/inside/container
-
-# Expose the port that your Spring Boot application listens on (change the port number if needed)
+#
+# Package stage
+#
+FROM openjdk:8-jdk-slim
+COPY --from=build /target/HospitalManagementSystem-0.0.1-SNAPSHOT.jar app.jar
+# ENV PORT=8080
 EXPOSE 8080
-
-# Set the command to run your Spring Boot application
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
