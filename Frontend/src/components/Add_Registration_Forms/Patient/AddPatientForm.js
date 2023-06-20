@@ -37,17 +37,20 @@ const AddPatientForm = ({encodedCredentials, handleBack }) => {
       body: JSON.stringify(payload),
     })
     .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else if (response.status === 400 || response.status === 404) {
-        // Validation error occurred
-        return response.json().then((data) => {
-          throw { validationErrors: data.messages || [] };
-        });
-      } else {
-        throw new Error('Error adding a patient');
+      if (!response.ok) {
+        if (response.status === 400 || response.status === 404) {
+          return response.json().then((data) => {
+            throw Object.assign(new Error('Validation Error'), {
+              validationErrors: data.messages || [],
+            });
+          });
+        } else {
+          throw new Error('Error adding a patient.');
+        }
       }
+      return response.json();
     })
+    
     .then((data) => {
       console.log('Patient Added:', data);
       setSuccess(true);

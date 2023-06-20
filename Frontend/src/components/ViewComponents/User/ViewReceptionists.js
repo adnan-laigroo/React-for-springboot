@@ -25,7 +25,7 @@ const ViewReceptionists = ({encodedCredentials}) => {
         console.error('Error fetching receptionists:', error);
         setLoading(false);
       });
-  }, []);
+  }, [encodedCredentials]);
   return (
     <div className="view-users-container">
       <h3 className="view-users-heading">View Receptionists</h3>

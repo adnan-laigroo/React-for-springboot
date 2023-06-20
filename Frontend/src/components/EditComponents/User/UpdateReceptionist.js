@@ -4,7 +4,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './UpdateUserForm.css';
 import API_URL from '../../../config';
 
-const UpdateReceptionist = ({ handleBack, encodedCredentials }) => {
+const UpdateReceptionist = ({ encodedCredentials }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -48,7 +48,7 @@ const UpdateReceptionist = ({ handleBack, encodedCredentials }) => {
     } else {
       setInitialLoad(false);
     }
-  }, [email]);
+  }, [initialLoad, encodedCredentials, email]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -74,7 +74,9 @@ const UpdateReceptionist = ({ handleBack, encodedCredentials }) => {
       if (!response.ok) {
         if (response.status === 400 || response.status === 404) {
           return response.json().then((data) => {
-            throw { validationErrors: data.messages || [] };
+            throw Object.assign(new Error('Validation Error'), {
+              validationErrors: data.messages || [],
+            });
           });
         } else {
           throw new Error('Error updating receptionist');
@@ -82,6 +84,7 @@ const UpdateReceptionist = ({ handleBack, encodedCredentials }) => {
       }
       return response.json();
     })
+    
     .then((data) => {
       console.log('Receptionist Updated:', data);
       setUpdateSuccess(true);

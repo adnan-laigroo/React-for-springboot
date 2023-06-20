@@ -1,35 +1,36 @@
 import React from 'react';
+import './navigation.css'; // Import the CSS file
 
 const Navigation = ({ activeButton, handleButtonClick }) => {
   return (
     <nav>
-      <ul>
+      <ul className="nav_list">
         <li>
-          <a
-            href="#"
-            className={activeButton === 'Home' ? 'active' : ''}
+          <button
+            type="button"
+            className={`nav_button ${activeButton === 'Home' ? 'active' : ''}`}
             onClick={() => handleButtonClick('Home')}
           >
             Home
-          </a>
+          </button>
         </li>
         <li>
-          <a
-            href="#"
-            className={activeButton === 'About' ? 'active' : ''}
+          <button
+            type="button"
+            className={`nav_button ${activeButton === 'About' ? 'active' : ''}`}
             onClick={() => handleButtonClick('About')}
           >
             About
-          </a>
+          </button>
         </li>
         <li>
-          <a
-            href="#"
-            className={activeButton === 'Contact' ? 'active' : ''}
+          <button
+            type="button"
+            className={`nav_button ${activeButton === 'Contact' ? 'active' : ''}`}
             onClick={() => handleButtonClick('Contact')}
           >
             Contact
-          </a>
+          </button>
         </li>
       </ul>
     </nav>

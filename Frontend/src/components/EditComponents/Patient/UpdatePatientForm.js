@@ -49,7 +49,7 @@ const UpdatePatientForm = ({ encodedCredentials, handleBack }) => {
     } else {
       setInitialLoad(false);
     }
-  }, [patId]);
+  }, [initialLoad, encodedCredentials, patId]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -77,18 +77,21 @@ const UpdatePatientForm = ({ encodedCredentials, handleBack }) => {
       headers: headers,
       body: JSON.stringify(updatedPatientData),
     })
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 400 || response.status === 404) {
-            return response.json().then((data) => {
-              throw { validationErrors: data.messages || [] };
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400 || response.status === 404) {
+          return response.json().then((data) => {
+            throw Object.assign(new Error('Validation Error'), {
+              validationErrors: data.messages || [],
             });
-          } else {
-            throw new Error('Error updating patient');
-          }
+          });
+        } else {
+          throw new Error('Error updating patient');
         }
-        return response.json();
-      })
+      }
+      return response.json();
+    })
+    
       .then((data) => {
         console.log('Patient Updated:', data);
         setUpdateSuccess(true);

@@ -31,7 +31,7 @@ const DeleteDoctor = ({ handleBack, encodedCredentials }) => {
             return response.json();
           })
           .then((data) => {
-            const { firstName, lastName, email, phoneNo, speciality } = data;
+            const { firstName, lastName, phoneNo, speciality } = data;
             setFirstName(firstName);
             setLastName(lastName);
             setPhoneNo(phoneNo);

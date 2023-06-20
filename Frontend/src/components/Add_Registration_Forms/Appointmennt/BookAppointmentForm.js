@@ -30,18 +30,21 @@ const BookAppointmentForm = ({ encodedCredentials, handleBack }) => {
         appointmentTime: formattedAppointmentTime,
       }),
     })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else if (response.status === 400 || response.status === 404) {
-          // Validation error occurred
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400 || response.status === 404) {
           return response.json().then((data) => {
-            throw { validationErrors: data.messages || [] };
+            throw Object.assign(new Error('Validation Error'), {
+              validationErrors: data.messages || [],
+            });
           });
         } else {
           throw new Error('Error booking appointment');
         }
-      })
+      }
+      return response.json();
+    })
+    
       .then((data) => {
         console.log('Appointment Booked:', data);
         setAppointmentBooked(true);

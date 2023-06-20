@@ -26,10 +26,16 @@ const UpdatePasswordForm = ({ username, encodedCredentials, handleBack, handleLo
   }, [showDialog]);
 
   useEffect(() => {
+    const handleDialogTimeout = () => {
+      setShowDialog(false);
+      handleLogout();
+      // Logout the user and render the login form
+    };
+
     if (dialogTimer === 0) {
       handleDialogTimeout();
     }
-  }, [dialogTimer]);
+  }, [dialogTimer, handleLogout]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -81,13 +87,6 @@ const UpdatePasswordForm = ({ username, encodedCredentials, handleBack, handleLo
   const handleDialogClose = () => {
     setShowDialog(false);
     handleLogout();
-    // setIsLoggedIn(false);
-    // Logout the user and render the login form
-  };
-
-  const handleDialogTimeout = () => {
-    setShowDialog(false);
-    handleLogout();
     // Logout the user and render the login form
   };
 
@@ -98,11 +97,13 @@ const UpdatePasswordForm = ({ username, encodedCredentials, handleBack, handleLo
       </button>
       {error && !passwordUpdated && (
         <div className="password-error-message">
-          {error}
+          <p className="error-message">{error}</p>
           {validationErrors && (
             <ul className="validation-errors">
               {validationErrors.map((errorMsg, index) => (
-                <li key={index}>{errorMsg}</li>
+                <li key={index} className="validation-error">
+                  {errorMsg}
+                </li>
               ))}
             </ul>
           )}
@@ -165,20 +166,6 @@ const UpdatePasswordForm = ({ username, encodedCredentials, handleBack, handleLo
               </div>
             )}
           </form>
-          {error && !passwordUpdated && (
-            <div className="password-error-message">
-              <p className="error-message">{error}</p>
-              {validationErrors && (
-                <ul className="validation-errors">
-                  {validationErrors.map((errorMsg, index) => (
-                    <li key={index} className="validation-error">
-                      {errorMsg}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
         </div>
       ) : (
         <div>

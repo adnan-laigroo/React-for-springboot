@@ -26,7 +26,7 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
         console.error('Error fetching appointments:', error);
         setLoading(false);
       });
-  }, []);
+  }, [encodedCredentials]);
 
   const getStatusColor = (status) => {
     switch (status) {

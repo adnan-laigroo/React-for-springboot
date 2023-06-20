@@ -60,18 +60,21 @@ const RegistrationForm = ({ handleBack, encodedCredentials }) => {
       headers: headers,
       body: JSON.stringify(formData),
     })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else if (response.status === 400 || response.status === 404) {
-          // Validation error occurred
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400 || response.status === 404) {
           return response.json().then((data) => {
-            throw { validationErrors: data.messages || [] };
+            throw Object.assign(new Error('Validation Error'), {
+              validationErrors: data.messages || [],
+            });
           });
         } else {
           throw new Error('Error adding a ' + formValues.role);
         }
-      })
+      }
+      return response.json();
+    })
+    
       .then((data) => {
         console.log('User registered:', data);
         setUserCreated(true);

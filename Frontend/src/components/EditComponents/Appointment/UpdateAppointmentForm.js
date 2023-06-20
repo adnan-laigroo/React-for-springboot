@@ -55,7 +55,7 @@ const UpdateAppointmentForm = ({ encodedCredentials, handleBack }) => {
     } else {
       setInitialLoad(false);
     }
-  }, [apId]);
+  }, [apId, encodedCredentials, initialLoad]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -79,18 +79,21 @@ const UpdateAppointmentForm = ({ encodedCredentials, handleBack }) => {
       headers: headers,
       body: JSON.stringify(updatedAppointmentData),
     })
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 400 || response.status === 404) {
-            return response.json().then((data) => {
-              throw { validationErrors: data.messages || [] };
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400 || response.status === 404) {
+          return response.json().then((data) => {
+            throw Object.assign(new Error('Validation Error'), {
+              validationErrors: data.messages || [],
             });
-          } else {
-            throw new Error('Error updating appointment');
-          }
+          });
+        } else {
+          throw new Error('Error updating appointment.');
         }
-        return response.json();
-      })
+      }
+      return response.json();
+    })
+    
       .then((data) => {
         console.log('Appointment Updated:', data);
         setUpdateSuccess(true);

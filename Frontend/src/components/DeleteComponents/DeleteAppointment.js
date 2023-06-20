@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import './DeleteUser.css';
@@ -11,16 +11,12 @@ const DeleteAppointment = ({ handleBack, encodedCredentials }) => {
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
 
-  useEffect(() => {
+  const fetchAppointmentDetails = useCallback(() => {
     if (!apId) {
       setAppointmentData(null);
       return;
     }
 
-    fetchAppointmentDetails();
-  }, [apId]);
-
-  const fetchAppointmentDetails = () => {
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + encodedCredentials);
 
@@ -41,7 +37,11 @@ const DeleteAppointment = ({ handleBack, encodedCredentials }) => {
         console.error('Error fetching appointment details:', error);
         setError('Failed to fetch appointment details. Please try again.');
       });
-  };
+  }, [apId, encodedCredentials]);
+
+  useEffect(() => {
+    fetchAppointmentDetails();
+  }, [fetchAppointmentDetails]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -142,7 +142,7 @@ const DeleteAppointment = ({ handleBack, encodedCredentials }) => {
             </div>
           </>
         )}
-       <div className="user-form-group">
+        <div className="user-form-group">
           <label htmlFor="confirmCheckbox">
             <input
               type="checkbox"
@@ -154,7 +154,7 @@ const DeleteAppointment = ({ handleBack, encodedCredentials }) => {
             Confirm deletion
           </label>
         </div>
-        
+
         <div className="user-form-buttons">
           <button type="submit" className="delete-button">
             Delete
@@ -162,12 +162,12 @@ const DeleteAppointment = ({ handleBack, encodedCredentials }) => {
         </div>
       </form>
       {error && <p className="error-message">{error}</p>}
-        {deleteSuccess && (
-          <div className="success-message">
-            <FontAwesomeIcon icon={faCheckCircle} />
-            <p>Appointment deleted successfully.</p>
-          </div>
-        )}
+      {deleteSuccess && (
+        <div className="success-message">
+          <FontAwesomeIcon icon={faCheckCircle} />
+          <p>Appointment deleted successfully.</p>
+        </div>
+      )}
     </div>
   );
 };

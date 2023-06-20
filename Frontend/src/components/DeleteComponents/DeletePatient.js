@@ -17,31 +17,31 @@ const DeletePatient = ({ handleBack, encodedCredentials }) => {
       return;
     }
 
+    const fetchPatientDetails = () => {
+      const headers = new Headers();
+      headers.append('Authorization', 'Basic ' + encodedCredentials);
+
+      fetch(`${API_URL}/hospital/patient/get/${patId}`, {
+        headers: headers
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Error fetching patient details');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setPatientData(data);
+          setError('');
+        })
+        .catch((error) => {
+          console.error('Error fetching patient details:', error);
+          setError('Failed to fetch patient details. Please try again.');
+        });
+    };
+
     fetchPatientDetails();
-  }, [patId]);
-
-  const fetchPatientDetails = () => {
-    const headers = new Headers();
-    headers.append('Authorization', 'Basic ' + encodedCredentials);
-
-    fetch(`${API_URL}/hospital/patient/get/${patId}`, {
-      headers: headers
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error fetching patient details');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setPatientData(data);
-        setError('');
-      })
-      .catch((error) => {
-        console.error('Error fetching patient details:', error);
-        setError('Failed to fetch patient details. Please try again.');
-      });
-  };
+  }, [patId, encodedCredentials]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();

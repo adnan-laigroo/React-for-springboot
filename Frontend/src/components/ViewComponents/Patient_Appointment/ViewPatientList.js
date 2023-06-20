@@ -24,7 +24,7 @@ const ViewPatientList = ({encodedCredentials, handleBack }) => {
         console.error('Error fetching patients:', error);
         setLoading(false);
       });
-  }, []);
+  }, [encodedCredentials]);
   
   return (
     <div>

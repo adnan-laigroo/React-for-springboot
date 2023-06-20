@@ -51,7 +51,7 @@ const UpdateDoctor = ({ handleBack, encodedCredentials }) => {
     } else {
       setInitialLoad(false);
     }
-  }, [email]);
+  }, [email, encodedCredentials, initialLoad]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -74,18 +74,21 @@ const UpdateDoctor = ({ handleBack, encodedCredentials }) => {
       headers: headers,
       body: JSON.stringify(updatedDoctorData),
     })
-      .then((response) => {
-        if (!response.ok) {
-          if (response.status === 400 || response.status === 404) {
-            return response.json().then((data) => {
-              throw { validationErrors: data.messages || [] };
+    .then((response) => {
+      if (!response.ok) {
+        if (response.status === 400 || response.status === 404) {
+          return response.json().then((data) => {
+            throw Object.assign(new Error('Validation Error'), {
+              validationErrors: data.messages || [],
             });
-          } else {
-            throw new Error('Error updating doctor');
-          }
+          });
+        } else {
+          throw new Error('Error updating doctor');
         }
-        return response.json();
-      })
+      }
+      return response.json();
+    })
+    
       .then((data) => {
         console.log('Doctor Updated:', data);
         setUpdateSuccess(true);

@@ -25,7 +25,7 @@ const ViewDoctors = ({encodedCredentials}) => {
         console.error('Error fetching doctors:', error);
         setLoading(false);
       });
-  }, []);
+  }, [encodedCredentials]);
 
 
 

@@ -11,11 +11,12 @@ const DeleteReceptionist = ({ handleBack, encodedCredentials }) => {
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [confirmed, setConfirmed] = useState(false); // Confirmation state
 
-  useEffect(() => {
-    if (email) {
-      fetchReceptionistDetails();
-    }
-  }, [email]);
+useEffect(() => {
+  if (email) {
+    fetchReceptionistDetails();
+  }
+} );
+
 
   const fetchReceptionistDetails = () => {
     const headers = new Headers();
