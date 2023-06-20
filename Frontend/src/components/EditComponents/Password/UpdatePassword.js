@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaCheck } from 'react-icons/fa';
 import './UpdatePasswordForm.css';
 import API_URL from '../../../config';
-import LoginForm from '../../Login_Forms/LoginForm';
 
 const UpdatePasswordForm = ({ username, encodedCredentials, handleBack, handleLogout }) => {
   const [newPassword, setNewPassword] = useState('');
