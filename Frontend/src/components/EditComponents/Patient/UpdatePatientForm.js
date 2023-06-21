@@ -72,7 +72,7 @@ const UpdatePatientForm = ({ encodedCredentials, handleBack }) => {
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + encodedCredentials);
     headers.append('Content-Type', 'application/json');
-    fetch(`${API_URL}hospital/patient/update/${patId}`, {
+    fetch(`${API_URL}/hospital/patient/update/${patId}`, {
       method: 'PUT',
       headers: headers,
       body: JSON.stringify(updatedPatientData),

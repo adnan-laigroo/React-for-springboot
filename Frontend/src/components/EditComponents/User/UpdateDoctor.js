@@ -69,7 +69,7 @@ const UpdateDoctor = ({ handleBack, encodedCredentials }) => {
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + encodedCredentials);
     headers.append('Content-Type', 'application/json');
-    fetch(`${API_URL}hospital/doctor/update/${email}`, {
+    fetch(`${API_URL}/hospital/doctor/update/${email}`, {
       method: 'PUT',
       headers: headers,
       body: JSON.stringify(updatedDoctorData),

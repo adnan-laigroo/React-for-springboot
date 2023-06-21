@@ -65,7 +65,7 @@ const UpdateReceptionist = ({ encodedCredentials }) => {
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + encodedCredentials);
     headers.append('Content-Type', 'application/json');
-    fetch(`${API_URL}hospital/receptionist/update/${email}`, {
+    fetch(`${API_URL}/hospital/receptionist/update/${email}`, {
       method: 'PUT',
       headers: headers,
       body: JSON.stringify(updatedReceptionistData),

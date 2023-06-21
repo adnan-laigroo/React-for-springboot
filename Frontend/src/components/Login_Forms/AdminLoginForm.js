@@ -22,7 +22,7 @@ const AdminLoginForm = ({ handleBackButtonClick }) => {
     const encodedCredentials = btoa(credentials); // Encode credentials in Base64
     setEncodedCredentials(encodedCredentials);
 
-    fetch(`${API_URL}hospital/user/authenticate`, {
+    fetch(`${API_URL}/hospital/user/authenticate`, {
       method: 'GET',
       headers: {
         'Authorization': 'Basic ' + encodedCredentials,
