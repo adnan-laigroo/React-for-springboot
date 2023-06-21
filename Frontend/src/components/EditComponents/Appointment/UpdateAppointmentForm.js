@@ -20,7 +20,10 @@ const UpdateAppointmentForm = ({ encodedCredentials, handleBack }) => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!initialLoad) {
+    if (initialLoad) {
+      setLoading(true); // Set loading state
+      setInitialLoad(false);
+    } else {
       // Fetch appointment details based on apId
       const headers = new Headers();
       headers.append('Authorization', 'Basic ' + encodedCredentials);
@@ -58,8 +61,6 @@ const UpdateAppointmentForm = ({ encodedCredentials, handleBack }) => {
           setError('Failed to fetch appointment details. Please try again.');
           setLoading(false); // Clear loading state
         });
-    } else {
-      setInitialLoad(false);
     }
   }, [apId, encodedCredentials, initialLoad]);
 
@@ -138,9 +139,15 @@ const UpdateAppointmentForm = ({ encodedCredentials, handleBack }) => {
           )}
         </div>
       )}
+      {initialLoad && loading && (
+  <div className="loading-message">
+    <FontAwesomeIcon icon={faSpinner} spin />
+    <p>Loading appointment details...</p>
+  </div>
+)}
       <h3>Update Appointment</h3>
       <form className="update-appointment-form" onSubmit={handleFormSubmit}>
-      <div className="form-group">
+        <div className="form-group">
           <label htmlFor="apId">Appointment ID:</label>
           <input
             type="text"
@@ -151,6 +158,10 @@ const UpdateAppointmentForm = ({ encodedCredentials, handleBack }) => {
             className="input-field"
           />
         </div>
+        {/* ... Rest of the form fields ... */}
+
+
+ 
         <div className="form-group">
           <label htmlFor="patId">Patient ID:</label>
           <input
@@ -235,12 +246,8 @@ const UpdateAppointmentForm = ({ encodedCredentials, handleBack }) => {
         </div>
       )}
 
-      {initialLoad && loading && (
-        <div className="loading-message">
-          <FontAwesomeIcon icon={faSpinner} spin />
-          <p>Loading appointment details...</p>
-        </div>
-      )}
+
+
     </div>
   );
 };
