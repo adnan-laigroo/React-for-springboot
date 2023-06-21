@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FaCheck, FaClock } from 'react-icons/fa';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import './tableStyle.css'; // Import the CSS file
 import API_URL from '../../../config';
 
 const ViewAppointments = ({ encodedCredentials, handleBack }) => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updatingStatus, setUpdatingStatus] = useState(false);
 
   useEffect(() => {
     // Fetch appointments from the API
@@ -40,6 +43,9 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
   };
 
   const handleUpdateStatus = (appointmentId) => {
+    // Display the updating status
+    setUpdatingStatus(true);
+
     // Send API request to update the appointment status
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + encodedCredentials);
@@ -60,6 +66,7 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
           .then((data) => {
             // Update state with the fetched appointments
             setAppointments(data);
+            setUpdatingStatus(false); // Clear the updating status
           })
           .catch((error) => {
             console.error('Error fetching appointments:', error);
@@ -123,8 +130,13 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
                         <button
                           onClick={() => handleUpdateStatus(appointment.apId)}
                           className="update-button"
+                          disabled={updatingStatus} // Disable the button while updating
                         >
-                          Update Status
+                          {updatingStatus ? (
+                            <FontAwesomeIcon icon={faSpinner} spin /> // Show the spinning icon
+                          ) : (
+                            'Update Status'
+                          )}
                         </button>
                       )}
                     </td>
