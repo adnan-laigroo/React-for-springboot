@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaExclamationCircle } from 'react-icons/fa';
 import ReceptionistDashboard from '../Dashboards/ReceptionistDashboard';
 import DoctorDashboard from '../Dashboards/DoctorDashboard';
+import API_URL from '../../config';
 
 const LoginForm = ({ handleBackButtonClick }) => {
   const [username, setUsername] = useState('');
@@ -25,7 +26,7 @@ const LoginForm = ({ handleBackButtonClick }) => {
     const encodedCredentials = btoa(credentials); // Encode credentials in Base64
     setEncodedCredentials(encodedCredentials);
 
-    fetch(`http://localhost:8080/hospital/user/role/${username}`, {
+    fetch(`${API_URL}hospital/user/role/${username}`, {
       method: 'GET',
       headers: {
         'Authorization': 'Basic ' + encodedCredentials,
