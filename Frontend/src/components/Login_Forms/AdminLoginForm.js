@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import AdminDashboard from '../Dashboards/AdminDashboard';
 import { FaExclamationCircle } from 'react-icons/fa';
+import { FiLoader } from 'react-icons/fi'; // Import the loading icon component
 import API_URL from '../../config';
+import './Login.css';
+
 const AdminLoginForm = ({ handleBackButtonClick }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -9,6 +12,7 @@ const AdminLoginForm = ({ handleBackButtonClick }) => {
   const [loginError, setLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [encodedCredentials, setEncodedCredentials] = useState('');
+  const [loading, setLoading] = useState(false); // New state variable for loading state
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -21,13 +25,14 @@ const AdminLoginForm = ({ handleBackButtonClick }) => {
     const credentials = `${username}:${password}`;
     const encodedCredentials = btoa(credentials); // Encode credentials in Base64
     setEncodedCredentials(encodedCredentials);
+    setLoading(true); // Set loading state to true
 
     fetch(`${API_URL}/hospital/user/authenticate`, {
       method: 'GET',
       headers: {
-        'Authorization': 'Basic ' + encodedCredentials,
-        'Content-Type': 'application/json'
-      }
+        Authorization: 'Basic ' + encodedCredentials,
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -42,19 +47,31 @@ const AdminLoginForm = ({ handleBackButtonClick }) => {
         console.error('Error retrieving role:', error);
         setLoginError(true);
         setErrorMessage('Wrong username or password');
+      })
+      .finally(() => {
+        setLoading(false); // Set loading state back to false after the request completes
       });
   };
-
 
   const handleLogout = () => {
     setLoggedIn(false);
   };
+
+  const handleReset = () => {
+    setUsername('');
+    setPassword('');
+    setLoginError(false);
+    setErrorMessage('');
+  };
   if (loggedIn) {
     return (
-      <AdminDashboard handleLogout={handleLogout} encodedCredentials={encodedCredentials} username={username} />
+      <AdminDashboard
+        handleLogout={handleLogout}
+        encodedCredentials={encodedCredentials}
+        username={username}
+      />
     );
   }
-
 
   return (
     <section className="form-section">
@@ -63,9 +80,15 @@ const AdminLoginForm = ({ handleBackButtonClick }) => {
           Back
         </button>
       </div>
-      <h1 className="login-title">Login</h1>
+      <h1 className="login-title">Admin Login</h1>
       <form className="login-form" onSubmit={handleFormSubmit}>
         <div>
+          {loginError && (
+            <div className="error-message">
+              <FaExclamationCircle className="error-icon" />
+              {errorMessage}
+            </div>
+          )}
           <label htmlFor="username">Username:</label>
           <input
             type="text"
@@ -86,17 +109,19 @@ const AdminLoginForm = ({ handleBackButtonClick }) => {
           />
         </div>
         <div>
-          <button type="reset" className="reset-button">
+          <button type="reset" onClick={handleReset} className="login-reset-button">
             Reset
           </button>
-          <button type="submit">Sign In</button>
+          <button type="submit" className="login-submit-button">
+            {loading ? ( // Conditional rendering based on the loading state
+              <span>
+                <FiLoader className="loading-icon" /> Loading...
+              </span>
+            ) : (
+              'Sign In'
+            )}
+          </button>
         </div>
-        {loginError && (
-          <div className="error-message">
-            <FaExclamationCircle className="error-icon" />
-            {errorMessage}
-          </div>
-        )}
       </form>
     </section>
   );

@@ -8,23 +8,23 @@ import DeleteReceptionist from './DeleteReceptionist';
 const UserOptions = ({ handleOptionClick, handleBack}) => {
   return (
     <div>
-      <button className="back-button-left" onClick={handleBack}>
+     <button className="back-button-left" onClick={handleBack}>
         <span className="back-button-text">Back</span>
       </button>
-      <div className="edit-user-options">
+      <div className="delete-user-options">
         <button
-          className="edit-user-button"
+          className="delete-user-button"
           onClick={() => handleOptionClick('doctor')}
         >
-          <FontAwesomeIcon icon={faUserMd} className="edit-user-icon" />
-          <span className="edit-user-label">Delete Doctor</span>
+          <FontAwesomeIcon icon={faUserMd} className="delete-user-icon" />
+          <span className="delete-user-label">Delete Doctor</span>
         </button>
         <button
-          className="edit-user-button"
+          className="delete-user-button"
           onClick={() => handleOptionClick('receptionist')}
         >
-          <FontAwesomeIcon icon={faUser} className="edit-user-icon" />
-          <span className="edit-user-label">Delete Receptionist</span>
+          <FontAwesomeIcon icon={faUser} className="delete-user-icon" />
+          <span className="delete-user-label">Delete Receptionist</span>
         </button>
       </div>
     </div>
@@ -46,11 +46,11 @@ const DeleteUser = ({ encodedCredentials , handleBack }) => {
   };
 
   return (
-    <div className="edit-user-container">
+    <div className="delete-user-container">
       {optionsVisible ? (
         <UserOptions handleOptionClick={handleOptionClick} handleBack={handleBack} />
       ) : (
-        <div className="edit-user-content">
+        <div className="delete-user-content">
           <button className="back-button-left" onClick={handleToggleOptions}>
             <span className="back-button-text">Back</span>
           </button>

@@ -77,24 +77,26 @@
   margin-right: 5px;
 }
 
-.back-button-container {
+.delete-back-button-container {
   display: flex;
   justify-content: flex-start;
   width: 100%;
-  margin-top: 20px;
 }
 
-.back-button {
+.back-button-left {
+  position: initial;
+  top: 10px;
+  left: 10px;
   padding: 8px 16px;
   border: none;
   border-radius: 5px;
-  background-color: #bbb;
+  background-color: #4e71d2;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.back-button:hover {
+.back-button-left:hover {
   background-color: #999;
 }
 

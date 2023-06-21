@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { FaExclamationCircle } from 'react-icons/fa';
+import { FiLoader } from 'react-icons/fi'; // Import the loading icon component
 import ReceptionistDashboard from '../Dashboards/ReceptionistDashboard';
 import DoctorDashboard from '../Dashboards/DoctorDashboard';
 import API_URL from '../../config';
+import './Login.css';
 
 const LoginForm = ({ handleBackButtonClick }) => {
   const [username, setUsername] = useState('');
@@ -12,6 +14,7 @@ const LoginForm = ({ handleBackButtonClick }) => {
   const [loginError, setLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [encodedCredentials, setEncodedCredentials] = useState('');
+  const [loading, setLoading] = useState(false); // New state variable for loading state
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -25,13 +28,14 @@ const LoginForm = ({ handleBackButtonClick }) => {
     const credentials = `${username}:${password}`;
     const encodedCredentials = btoa(credentials); // Encode credentials in Base64
     setEncodedCredentials(encodedCredentials);
+    setLoading(true); // Set loading state to true
 
     fetch(`${API_URL}/hospital/user/role/${username}`, {
       method: 'GET',
       headers: {
-        'Authorization': 'Basic ' + encodedCredentials,
-        'Content-Type': 'application/json'
-      }
+        Authorization: 'Basic ' + encodedCredentials,
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -52,21 +56,48 @@ const LoginForm = ({ handleBackButtonClick }) => {
         console.error('Error retrieving role:', error);
         setLoginError(true);
         setErrorMessage('Wrong username or password');
+      })
+      .finally(() => {
+        setLoading(false); // Set loading state back to false after the request completes
       });
   };
 
   const handleLogout = () => {
-    setLoggedIn(false);
+    setUsername('');
+    setPassword('');
     setUserRole('');
   };
+
+  const handleReset = () => {
+    setUsername('');
+    setPassword('');
+    setUserRole('');
+    setLoginError(false);
+    setErrorMessage('');
+  };
+  
+
   const handleLogoutClick = () => {
     handleLogout(); // Call the handleLogout function provided as prop
   };
+
   if (loggedIn) {
     if (userRole === 'Doctor') {
-      return <DoctorDashboard handleLogout={handleLogoutClick}  encodedCredentials={encodedCredentials} username={username}/>;
+      return (
+        <DoctorDashboard
+          handleLogout={handleLogoutClick}
+          encodedCredentials={encodedCredentials}
+          username={username}
+        />
+      );
     } else if (userRole === 'Receptionist') {
-      return <ReceptionistDashboard handleLogout={handleLogoutClick} encodedCredentials={encodedCredentials} username={username} />;
+      return (
+        <ReceptionistDashboard
+          handleLogout={handleLogoutClick}
+          encodedCredentials={encodedCredentials}
+          username={username}
+        />
+      );
     }
   }
 
@@ -77,9 +108,16 @@ const LoginForm = ({ handleBackButtonClick }) => {
           Back
         </button>
       </div>
-      <h1 className="login-title">Login</h1>
+
+      <h1 className="login-title">User Login</h1>
       <form className="login-form" onSubmit={handleFormSubmit}>
         <div>
+          {loginError && (
+            <div className="error-message">
+              <FaExclamationCircle className="error-icon" />
+              {errorMessage}
+            </div>
+          )}
           <label htmlFor="username">Username:</label>
           <input
             type="text"
@@ -102,19 +140,19 @@ const LoginForm = ({ handleBackButtonClick }) => {
           />
         </div>
         <div>
-          <button type="reset" className="reset-button">
+          <button type="reset" onClick={handleReset} className="login-reset-button">
             Reset
           </button>
-          <button type="submit" className="submit-button">
-            Sign In
+          <button type="submit" className="login-submit-button">
+            {loading ? ( // Conditional rendering based on the loading state
+              <span>
+                <FiLoader className="loading-icon" /> Loading...
+              </span>
+            ) : (
+              'Sign In'
+            )}
           </button>
         </div>
-        {loginError && (
-          <div className="error-message">
-            <FaExclamationCircle className="error-icon" />
-            {errorMessage}
-          </div>
-        )}
       </form>
     </section>
   );

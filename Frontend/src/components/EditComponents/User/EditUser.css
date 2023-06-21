@@ -3,22 +3,28 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 500px; /* Increase the width */
+  width: 90%;
+  max-width: 500px;
   margin: 0 auto;
-  padding: 60px; /* Increase the padding */
+  padding: 40px;
   background-color: #f2f2f2;
-  border-radius: 20px; /* Increase the border-radius */
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .edit-user-heading {
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: bold;
   margin-bottom: 30px;
+  text-align: center;
 }
 
 .edit-user-options {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  justify-items: center;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 30px;
 }
 
@@ -27,28 +33,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 200px; /* Increase the width */
-  height: 200px; /* Increase the height */
+  width: 200px;
+  height: 200px;
   border: none;
   background-color: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background-color 0.3s;
-  overflow-wrap: break-word;
-  text-align: center;
-}
-
-.edit-user-button + .edit-user-button {
-  margin-left: 40px; /* Increase the margin for more spacing between buttons */
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .edit-user-button:hover {
   background-color: #f2f2f2;
+  transform: translateY(-5px);
 }
 
 .edit-user-icon {
-  font-size: 80px; /* Increase the font-size */
+  font-size: 80px;
   color: #333333;
 }
 
@@ -59,7 +60,7 @@
 }
 
 .back-button-left {
-  position: initial;
+  position: absolute;
   top: 10px;
   left: 10px;
   padding: 8px 16px;
@@ -71,10 +72,44 @@
   transition: background-color 0.3s ease;
 }
 
-.edit-user-container {
-  position: relative;
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+  .edit-user-options {
+    grid-template-columns: 1fr;
+  }
+}
+/* Updated CSS for mobile devices */
+@media (max-width: 480px) {
+  .edit-user-container {
+    padding: 20px;
+  }
+
+  .edit-user-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .edit-user-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .edit-user-button {
+    width: 150px;
+    height: 150px;
+  }
+
+  .edit-user-icon {
+    font-size: 60px;
+  }
+
+  .edit-user-label {
+    font-size: 14px;
+    text-align: center;
+  }
 }
 
-.edit-user-content {
-  position: relative;
-}
