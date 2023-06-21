@@ -39,33 +39,34 @@
     border-radius: 5px;
   }
   
-  .form-buttons {
+  .appointment-form-buttons {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center; /* Center the buttons horizontally */
+    margin-top: 20px;
   }
   
-  .reset-button,
-  .submit-button {
-    padding: 8px 16px;
+  .appointment-reset-button,
+  .appointment-submit-button {
+    padding: 10px 20px; /* Increase the padding for better button size */
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     color: #fff;
   }
   
-  .reset-button {
+  .appointment-reset-button {
     background-color: #bbb;
+    margin-right: 10px; /* Add margin-right to separate the buttons */
   }
   
-  .submit-button {
+  .appointment-submit-button {
     background-color: #4caf50;
   }
   
-  .submit-button:hover {
+  .appointment-submit-button:hover {
     background-color: #45a049;
   }
   
@@ -86,7 +87,7 @@
     padding: 8px 16px;
     border: none;
     border-radius: 5px;
-    background-color: #bbb;
+    background-color: #861616;
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;

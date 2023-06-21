@@ -12,7 +12,6 @@ import com.magic.project.repositories.PatientRepository;
 import com.magic.project.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;

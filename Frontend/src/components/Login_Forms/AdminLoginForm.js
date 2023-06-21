@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import AdminDashboard from '../Dashboards/AdminDashboard';
 import { FaExclamationCircle } from 'react-icons/fa';
-import { FiLoader } from 'react-icons/fi'; // Import the loading icon component
 import API_URL from '../../config';
 import './Login.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const AdminLoginForm = ({ handleBackButtonClick }) => {
   const [username, setUsername] = useState('');
@@ -115,7 +116,7 @@ const AdminLoginForm = ({ handleBackButtonClick }) => {
           <button type="submit" className="login-submit-button">
             {loading ? ( // Conditional rendering based on the loading state
               <span>
-                <FiLoader className="loading-icon" /> Loading...
+                <FontAwesomeIcon icon={faSpinner} spin /> Signing in...
               </span>
             ) : (
               'Sign In'

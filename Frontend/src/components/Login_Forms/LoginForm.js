@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { FaExclamationCircle } from 'react-icons/fa';
-import { FiLoader } from 'react-icons/fi'; // Import the loading icon component
+import { FaExclamationCircle} from 'react-icons/fa';
+
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import ReceptionistDashboard from '../Dashboards/ReceptionistDashboard';
 import DoctorDashboard from '../Dashboards/DoctorDashboard';
 import API_URL from '../../config';
 import './Login.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const LoginForm = ({ handleBackButtonClick }) => {
   const [username, setUsername] = useState('');
@@ -146,7 +148,7 @@ const LoginForm = ({ handleBackButtonClick }) => {
           <button type="submit" className="login-submit-button">
             {loading ? ( // Conditional rendering based on the loading state
               <span>
-                <FiLoader className="loading-icon" /> Loading...
+                <FontAwesomeIcon icon={faSpinner} spin /> Signing in...
               </span>
             ) : (
               'Sign In'

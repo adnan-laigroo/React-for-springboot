@@ -186,16 +186,25 @@ const UpdatePatientForm = ({ encodedCredentials, handleBack }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="symptom">Symptom:</label>
-          <input
-            type="text"
-            id="symptom"
-            name="symptom"
-            value={patientData.symptom}
-            onChange={(e) => setPatientData({ ...patientData, symptom: e.target.value })}
-            className="input-field"
-          />
-        </div>
+  <label htmlFor="symptom">Symptom:</label>
+  <select
+    id="symptom"
+    name="symptom"
+    value={patientData.symptom}
+    onChange={(e) => setPatientData({ ...patientData, symptom: e.target.value })}
+    className="input-field"
+  >
+    <option value="">Select a symptom</option>
+    <option value="Arthritis">Arthritis</option>
+    <option value="Backpain">Back pain</option>
+    <option value="Tissue injuries">Tissue injuries</option>
+    <option value="Dysmenorrhea">Dysmenorrhea</option>
+    <option value="Skin infection">Skin infection</option>
+    <option value="Skin burn">Skin burn</option>
+    <option value="Ear pain">Ear pain</option>
+  </select>
+</div>
+
         <div className="form-update-buttons">
           <button type="submit" className="submit-button">
             Update

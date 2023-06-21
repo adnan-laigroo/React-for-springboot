@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaCheck } from 'react-icons/fa';
+import { FaCheck, FaSpinner } from 'react-icons/fa';
 import './BookAppointmentForm.css';
 import API_URL from '../../../config';
 
@@ -10,13 +10,15 @@ const BookAppointmentForm = ({ encodedCredentials, handleBack }) => {
   const [appointmentBooked, setAppointmentBooked] = useState(false);
   const [validationErrors, setValidationErrors] = useState([]);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-  
+    setIsLoading(true);
+
     // Format appointment time to "hh:mm:ss"
     const formattedAppointmentTime = appointmentTime + ':00';
-  
+
     // Send API request to book the appointment
     const headers = new Headers();
     headers.append('Authorization', 'Basic ' + encodedCredentials);
@@ -30,21 +32,20 @@ const BookAppointmentForm = ({ encodedCredentials, handleBack }) => {
         appointmentTime: formattedAppointmentTime,
       }),
     })
-    .then((response) => {
-      if (!response.ok) {
-        if (response.status === 400 || response.status === 404) {
-          return response.json().then((data) => {
-            throw Object.assign(new Error('Validation Error'), {
-              validationErrors: data.messages || [],
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 400 || response.status === 404) {
+            return response.json().then((data) => {
+              throw Object.assign(new Error('Validation Error'), {
+                validationErrors: data.messages || [],
+              });
             });
-          });
-        } else {
-          throw new Error('Error booking appointment');
+          } else {
+            throw new Error('Error booking appointment');
+          }
         }
-      }
-      return response.json();
-    })
-    
+        return response.json();
+      })
       .then((data) => {
         console.log('Appointment Booked:', data);
         setAppointmentBooked(true);
@@ -59,9 +60,12 @@ const BookAppointmentForm = ({ encodedCredentials, handleBack }) => {
           setError('Error booking appointment');
           console.error('Error booking appointment:', error);
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
-  
+
   const handleReset = () => {
     setPatId('');
     setBloodGroup('');
@@ -102,15 +106,25 @@ const BookAppointmentForm = ({ encodedCredentials, handleBack }) => {
             </div>
             <div className="form-group">
               <label htmlFor="blood-group">Blood Group:</label>
-              <input
-                type="text"
+              <select
                 id="blood-group"
                 name="blood-group"
                 value={bloodGroup}
                 onChange={(e) => setBloodGroup(e.target.value)}
                 className="input-field"
-              />
+              >
+                <option value="">Select a blood group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
             </div>
+
             <div className="form-group">
               <label htmlFor="appointment-time">Appointment Time:</label>
               <input
@@ -122,12 +136,18 @@ const BookAppointmentForm = ({ encodedCredentials, handleBack }) => {
                 className="input-field"
               />
             </div>
-            <div className="form-buttons">
-              <button type="reset" className="reset-button" onClick={handleReset}>
+            <div className="appointment-form-buttons">
+              <button type="reset" className="appointment-reset-button" onClick={handleReset}>
                 Reset
               </button>
-              <button type="submit" className="submit-button">
-                Book
+              <button type="submit" className="appointment-submit-button" disabled={isLoading}>
+                {isLoading ? (
+                  <FaSpinner className="loading-icon" />
+                ) : (
+                  <>
+                    Book <FaCheck className="submit-icon" />
+                  </>
+                )}
               </button>
             </div>
           </form>

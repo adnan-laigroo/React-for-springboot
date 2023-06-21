@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaUserCheck, FaUserPlus } from 'react-icons/fa';
+import { FaUserCheck, FaUserPlus, FaSpinner } from 'react-icons/fa';
 import './RegistrationForm.css'; // Import the CSS file
 import API_URL from '../../../config';
 
@@ -31,6 +31,8 @@ const RegistrationForm = ({ handleBack, encodedCredentials }) => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    setError("");
+    setUserCreated(false);
     setIsSubmitting(true);
 
     const endpoint =
@@ -60,32 +62,29 @@ const RegistrationForm = ({ handleBack, encodedCredentials }) => {
       headers: headers,
       body: JSON.stringify(formData),
     })
-    .then((response) => {
-      if (!response.ok) {
-        if (response.status === 400 || response.status === 404) {
-          return response.json().then((data) => {
-            throw Object.assign(new Error('Validation Error'), {
-              validationErrors: data.messages || [],
+      .then((response) => {
+        if (!response.ok) {
+          if (response.status === 400 || response.status === 404) {
+            return response.json().then((data) => {
+              throw Object.assign(new Error('Validation Error'), {
+                validationErrors: data.messages || [],
+              });
             });
-          });
-        } else {
-          throw new Error('Error adding a ' + formValues.role);
+          } else {
+            throw new Error('Error adding a ' + formValues.role);
+          }
         }
-      }
-      return response.json();
-    })
-    
+        return response.json();
+      })
       .then((data) => {
         console.log('User registered:', data);
         setUserCreated(true);
         setUserRole(formValues.role);
-        setIsSubmitting(false);
         setFormValues(initialFormValues);
         setError('');
         setValidationErrors([]);
       })
       .catch((error) => {
-        setIsSubmitting(false);
         if (error.validationErrors) {
           setValidationErrors(error.validationErrors);
           setError('Failed to add a ' + formValues.role);
@@ -93,12 +92,16 @@ const RegistrationForm = ({ handleBack, encodedCredentials }) => {
           setError('Error adding a patient');
           console.error('Error adding a ' + formValues.role);
         }
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
   const handleFormReset = () => {
     setFormValues(initialFormValues);
-    
+    setError('');
+    setValidationErrors([]);
   };
 
   return (
@@ -107,7 +110,7 @@ const RegistrationForm = ({ handleBack, encodedCredentials }) => {
         <button className="back-button" onClick={handleBack}>
           Back
         </button>
-        
+      </div>
       {error && !userCreated && (
         <div className="user-create-error-message">
           {error}
@@ -120,7 +123,21 @@ const RegistrationForm = ({ handleBack, encodedCredentials }) => {
           )}
         </div>
       )}
-      </div>
+      {userCreated && (
+        <div className="success-message-top">
+          {userRole === 'Doctor' ? (
+            <>
+              <FaUserCheck className="success-icon" />
+              <p className="success-text">New doctor user created!</p>
+            </>
+          ) : (
+            <>
+              <FaUserPlus className="success-icon" />
+              <p className="success-text">New receptionist user created!</p>
+            </>
+          )}
+        </div>
+      )}
       <h1 className="register-title">Register</h1>
       <form className="register-form" onSubmit={handleFormSubmit}>
         {/* Form fields */}
@@ -185,16 +202,22 @@ const RegistrationForm = ({ handleBack, encodedCredentials }) => {
         {formValues.role === 'Doctor' && (
           <div className="form-group">
             <label htmlFor="speciality">Speciality:</label>
-            <input
-              type="text"
+            <select
               id="speciality"
               name="speciality"
               value={formValues.speciality}
               onChange={handleFormChange}
               className="input-field"
-            />
+            >
+              <option value="">Select a speciality</option>
+              <option value="Orthopedic">Orthopedic</option>
+              <option value="Gynecology">Gynecology</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="ENT">ENT</option>
+            </select>
           </div>
         )}
+
         <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
@@ -206,32 +229,25 @@ const RegistrationForm = ({ handleBack, encodedCredentials }) => {
             className="input-field"
           />
         </div>
-       {/* Form submission buttons */}
-       <div className="button-group">
+        {/* Form submission buttons */}
+        <div className="button-group">
           <button type="reset" className="reset-button" onClick={handleFormReset}>
             Reset
           </button>
           <button type="submit" className="submit-button" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Sign In'}
+            {isSubmitting ? (
+              <>
+                <FaSpinner className="loading-icon" />
+                Submitting...
+              </>
+            ) : (
+              'Sign In'
+            )}
           </button>
         </div>
       </form>
 
-      {userCreated && (
-        <div className="success-message-top">
-          {userRole === 'Doctor' ? (
-            <>
-              <FaUserCheck className="success-icon" />
-              <p className="success-text">New doctor user created!</p>
-            </>
-          ) : (
-            <>
-              <FaUserPlus className="success-icon" />
-              <p className="success-text">New receptionist user created!</p>
-            </>
-          )}
-        </div>
-      )}
+      
     </section>
   );
 };

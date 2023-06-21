@@ -85,24 +85,16 @@ label {
   border-radius: 4px;
 }
 
-.form-buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
+/* Update existing CSS rules */
 
 .reset-button,
-.submit-button {
+.submit-button,
+.patient-reset-button,
+.patient-submit-button {
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.submit-button {
-  background-color: #007bff;
-  color: #fff;
-  margin-left: 10px;
 }
 
 .reset-button {
@@ -110,6 +102,42 @@ label {
   color: #fff;
   margin-right: 10px;
 }
+
+
+.patient-submit-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-left: 10px;
+}
+
+/* Add new CSS rules */
+
+.patient-form-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.patient-reset-button,
+.patient-submit-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.patient-reset-button {
+  background-color: #ccc;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.patient-submit-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-left: 10px;
+}
+
 .patient-added-container {
   text-align: center;
   margin-top: 20px;
@@ -127,10 +155,9 @@ label {
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
-
 }
 
-.success-message{
+.success-message {
   display: block;
 }
 
@@ -149,4 +176,52 @@ label {
   background-color: #2f8e5e;
 }
 
+/* Responsive Styling */
 
+@media screen and (max-width: 600px) {
+  .add-patient-form-container {
+    padding: 10px;
+  }
+
+  .back-button {
+    margin-bottom: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .input-field,
+  .address-field input {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .form-buttons {
+    margin-top: 15px;
+  }
+
+  .reset-button,
+  .submit-button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .patient-added-container {
+    margin-top: 15px;
+  }
+
+  .success-icon {
+    font-size: 24px;
+  }
+
+  .success-message {
+    font-size: 18px;
+  }
+
+  .add-another-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    margin-top: 15px;
+  }
+}

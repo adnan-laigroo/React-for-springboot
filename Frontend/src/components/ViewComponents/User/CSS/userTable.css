@@ -5,9 +5,9 @@
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .back-button {
+}
+
+.back-button {
   margin-top: 10px;
   padding: 8px 16px;
   border: none;
@@ -16,43 +16,45 @@
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  }
-  
-  .back-button:hover {
+}
+
+.back-button:hover {
   background-color: #999;
-  }
-  
-  .user-table {
+}
+
+.user-table {
   width: 100%;
   border-collapse: collapse;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .user-table th,
-  .user-table td {
+}
+
+.user-table th,
+.user-table td {
   padding: 12px 20px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  }
-  
-  .user-table th {
+  word-break: break-word;
+}
+
+.user-table th {
   background-color: #f2f2f2;
   font-weight: bold;
   color: #333;
-  }
-  
-  .user-table tr:nth-child(even) {
+}
+
+.user-table tr:nth-child(even) {
   background-color: #f9f9f9;
-  }
-  
-  .user-table .action-buttons {
+}
+
+.user-table .action-buttons {
   display: flex;
   justify-content: center;
   align-items: center;
-  }
-  
-  .user-table .action-buttons button {
-  margin-right: 5px;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.user-table .action-buttons button {
   padding: 8px;
   border: none;
   border-radius: 5px;
@@ -60,20 +62,37 @@
   transition: background-color 0.3s ease;
   font-size: 14px;
   color: #fff;
-  }
-  
-  .user-table .action-buttons .delete-button {
+  flex: 1 0 50%;
+}
+
+.user-table .action-buttons .delete-button {
   background-color: #ff0000;
-  }
-  
-  .user-table .action-buttons .delete-button:hover {
+}
+
+.user-table .action-buttons .delete-button:hover {
   background-color: #cc0000;
-  }
-  
-  .user-table .action-buttons .edit-button {
+}
+
+.user-table .action-buttons .edit-button {
   background-color: #333;
-  }
-  
-  .user-table .action-buttons .edit-button:hover {
+}
+
+.user-table .action-buttons .edit-button:hover {
   background-color: #222;
+}
+
+/* Responsive Styles */
+
+@media only screen and (max-width: 767px) {
+  .user-table th,
+  .user-table td {
+    padding: 10px;
+    font-size: 12px;
   }
+
+  .user-table .action-buttons button {
+    padding: 6px;
+    font-size: 12px;
+    flex: 0 0 100%;
+  }
+}

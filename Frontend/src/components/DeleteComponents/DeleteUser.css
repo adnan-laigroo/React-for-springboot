@@ -44,11 +44,14 @@
 
 .user-form-buttons {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
 .delete-button {
+  flex: 1 0 48%; /* Adjust the width of buttons on smaller screens */
   padding: 10px 16px;
   border: none;
   border-radius: 5px;
