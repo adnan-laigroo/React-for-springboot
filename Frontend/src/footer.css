@@ -1,0 +1,38 @@
+/* Base styles */
+.footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: flex;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #000000, #b1b6be); /* Gradient background */
+   
+  }
+  
+  .footer .logo {
+    margin-right: 10px;
+    height: 30px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .footer {
+      font-size: 16px;
+      padding: 5px;
+    }
+  
+    .footer .logo {
+      height: 20px;
+      margin-right: 5px;
+    }
+  }
+  

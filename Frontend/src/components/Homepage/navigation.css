@@ -1,21 +1,25 @@
 .nav_list {
-    list-style: none;
-    display: flex;
-    justify-content: left;
-    padding: 0;
-  }
-  
-  .nav_button {
-    background: none;
-    border: none;
-    padding: 8px 16px;
-    margin: 0 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .nav_button.active {
-    background-color: #ccc;
-  }
-  
+  list-style: none;
+  display: flex;
+  justify-content: left;
+  padding: 0;
+  background: linear-gradient(to right, #000000, #b1b6be); /* Gradient background */
+  border: 2px solid #5c5c5c; /* Border color */
+  border-radius: 20px; /* Border radius */
+}
+
+.nav_button {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  margin: 0 4px;
+  font-size: 16px;
+  color: #fff; /* Text color */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav_button.active {
+  background-color: #ccc;
+  border-radius: 30px; /* Border radius */
+}
