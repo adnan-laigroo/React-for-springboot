@@ -1,0 +1,73 @@
+.FullPrescription {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .FullPrescription h3 {
+    margin-bottom: 10px;
+  }
+  
+  .FullPrescription .prescription-details {
+    margin-bottom: 20px;
+  }
+  
+  .FullPrescription .prescription-details label {
+    font-weight: bold;
+  }
+  
+  .FullPrescription .prescription-details p {
+    margin: 5px 0;
+  }
+  
+  .FullPrescription .prescribed-medicines,
+  .FullPrescription .prescribed-tests {
+    margin-top: 20px;
+  }
+  
+  .FullPrescription .prescribed-medicines table,
+  .FullPrescription .prescribed-tests table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .FullPrescription .prescribed-medicines th,
+  .FullPrescription .prescribed-tests th,
+  .FullPrescription .prescribed-medicines td,
+  .FullPrescription .prescribed-tests td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .FullPrescription .notes {
+    margin-top: 20px;
+  }
+  
+  .FullPrescription .notes label {
+    font-weight: bold;
+  }
+  
+  .FullPrescription .notes p {
+    margin: 5px 0;
+  }
+  
+  .FullPrescription .back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .FullPrescription .back-button:hover {
+    background-color: #c82333;
+  }
+  
+  .FullPrescription .error-message {
+    color: #dc3545;
+    margin-top: 10px;
+  }
+  

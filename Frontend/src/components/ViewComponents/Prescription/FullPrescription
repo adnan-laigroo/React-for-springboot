@@ -1,0 +1,74 @@
+// import React, { useState, useEffect } from 'react';
+// import './FullPrescription.css';
+// import API_URL from '../../../config';
+
+// const FullPrescription = ({ apId, handleBack, encodedCredentials }) => {
+//   const [prescription, setPrescription] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     // Fetch prescription details from the API
+//     const headers = new Headers();
+//     headers.append('Authorization', 'Basic ' + encodedCredentials);
+//     fetch(API_URL + `/hospital/prescription/get/${apId}`, {
+//       method: 'GET',
+//       headers: headers,
+//     })
+//       .then((response) => response.json())
+//       .then((data) => {
+//         // Update state with fetched prescription details
+//         setPrescription(data);
+//         setLoading(false);
+//       })
+//       .catch((error) => {
+//         // Handle any errors
+//         console.error('Error fetching prescription:', error);
+//         setLoading(false);
+//       });
+//   }, [apId]);
+
+//   return (
+//     <div>
+//       <br />
+//       <button className="prescription-back-button" onClick={handleBack}>
+//         Back
+//       </button>
+//       <h3>Full Prescription</h3>
+//       {loading ? (
+//         <p>Loading prescription...</p>
+//       ) : (
+//         <div className="full-prescription">
+//           <div className="prescription-details">
+//             <h4>Patient Name: {prescription.patientName}</h4>
+//             <h4>Doctor Name: {prescription.doctorName}</h4>
+//             <h4>Symptom: {prescription.symptom}</h4>
+//             <h4>Diagnosis: {prescription.diagnosis}</h4>
+//             <div className="prescribed-medicines">
+//               <h4>Prescribed Medicines:</h4>
+//               <ul>
+//                 {prescription.prescribedMedicines.map((medicine, index) => (
+//                   <li key={index}>
+//                     {medicine.medicineName} - {medicine.dosage} - {medicine.frequency}
+//                   </li>
+//                 ))}
+//               </ul>
+//             </div>
+//             <div className="prescribed-tests">
+//               <h4>Prescribed Tests:</h4>
+//               <ul>
+//                 {prescription.prescribedTests.map((test, index) => (
+//                   <li key={index}>
+//                     {test.testName} - {test.testResult}
+//                   </li>
+//                 ))}
+//               </ul>
+//             </div>
+//             <h4>Notes: {prescription.notes}</h4>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default FullPrescription;

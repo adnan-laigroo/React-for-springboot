@@ -60,7 +60,7 @@ const ViewPrescriptions = ({ encodedCredentials, appointmentId, handleBack }) =>
                     <td>{prescription.doctorName}</td>
                     <td>{prescription.diagnosis}</td>
                     <td>
-                      <button className="prescriptionAction-button prescriptionAction-view-button">
+                      <button className="prescriptionAction-button prescriptionAction-view-button" >
                         <FaEye className="prescriptionAction-button-icon" />
                         View
                       </button>
