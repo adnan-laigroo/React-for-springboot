@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FaCheck, FaClock } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FaCheck, FaClock } from 'react-icons/fa';
 import './tableStyle.css'; // Import the CSS file
 import API_URL from '../../../config';
 
@@ -9,6 +9,7 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [prescriptions, setPrescriptions] = useState([]);
 
   useEffect(() => {
     // Fetch appointments from the API
@@ -77,6 +78,24 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
       });
   };
 
+  const handleViewPrescriptions = (appointmentId) => {
+    // Send API request to view prescriptions for the given appointment
+    const headers = new Headers();
+    headers.append('Authorization', 'Basic ' + encodedCredentials);
+    fetch(API_URL + `/hospital/prescription/list?apId=${appointmentId}`, {
+      method: 'GET',
+      headers: headers,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Update state with the fetched prescriptions
+        setPrescriptions(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching prescriptions:', error);
+      });
+  };
+
   return (
     <div>
       <button className="back-button" onClick={handleBack}>
@@ -98,7 +117,7 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
                   <th>Date</th>
                   <th>Time</th>
                   <th>Status</th>
-                  <th>Actions</th> {/* Add a new table header for actions */}
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -127,17 +146,29 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
                     </td>
                     <td>
                       {appointment.appointmentStatus === 'Pending' && (
-                        <button
-                          onClick={() => handleUpdateStatus(appointment.apId)}
-                          className="update-button"
-                          disabled={updatingStatus} // Disable the button while updating
-                        >
-                          {updatingStatus ? (
-                            <FontAwesomeIcon icon={faSpinner} spin /> // Show the spinning icon
-                          ) : (
-                            'Update Status'
-                          )}
-                        </button>
+                        <div>
+                          <button
+                            onClick={() =>
+                              handleUpdateStatus(appointment.apId)
+                            }
+                            className="update-button"
+                            disabled={updatingStatus}
+                          >
+                            {updatingStatus ? (
+                              <FontAwesomeIcon icon={faSpinner} spin />
+                            ) : (
+                              'Update Status'
+                            )}
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleViewPrescriptions(appointment.apId)
+                            }
+                            className="view-prescriptions-button"
+                          >
+                            View Prescriptions
+                          </button>
+                        </div>
                       )}
                     </td>
                   </tr>
@@ -146,6 +177,19 @@ const ViewAppointments = ({ encodedCredentials, handleBack }) => {
             </table>
           ) : (
             <p>No appointments found.</p>
+          )}
+
+          {prescriptions.length > 0 && (
+            <div>
+              <h4>Prescriptions</h4>
+              <ul>
+                {prescriptions.map((prescription) => (
+                  <li key={prescription.prescriptionId}>
+                    Prescription ID: {prescription.prescriptionId}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
       )}

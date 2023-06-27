@@ -15,6 +15,10 @@ import ViewUserList from '../ViewComponents/User/ViewUserList';
 import DeleteUser from '../DeleteComponents/DeleteUser';
 import DeletePatient from '../DeleteComponents/DeletePatient';
 import DeleteAppointment from '../DeleteComponents/DeleteAppointment';
+import AddPrescriptionForm from '../Add_Registration_Forms/Prescription/AddPrescriptionForm';
+import UpdatePrescriptionForm from '../EditComponents/Prescription/UpdatePrescriptionForm';
+import DeletePrescription from '../DeleteComponents/DeletePrescription';
+import ViewPrescriptions from '../ViewComponents/Prescription/ViewPrescriptions';
 
 const AdminDashboard = ({ handleLogout, encodedCredentials, username }) => {
   const [currentDateTime, setCurrentDateTime] = useState('');
@@ -84,6 +88,23 @@ const AdminDashboard = ({ handleLogout, encodedCredentials, username }) => {
       // Perform the necessary action for deleting appointment
       setDisplayedComponent('deleteAppointment');
       setOptionsVisible(false);
+    }  else if (optionName === 'addPrescription') {
+        // Perform the necessary action for adding a new appointment
+        setDisplayedComponent('addPrescription');
+        setOptionsVisible(false);
+      } else if (optionName === 'updatePrescription') {
+        // Perform the necessary action for updating an appointment
+        setDisplayedComponent('updatePrescription');
+        setOptionsVisible(false);
+      } else if (optionName === 'viewPrescriptionList') {
+        // Perform the necessary action for viewing appointments
+        setDisplayedComponent('viewPrescriptions');
+        setOptionsVisible(false);
+      }   
+      else if (optionName === 'deletePrescription') {
+        // Perform the necessary action for deleting appointment
+        setDisplayedComponent('deletePrescription');
+        setOptionsVisible(false);
     } else if (optionName === 'updatePassword') {
       // Perform the necessary action for updating the receptionist's password
       setDisplayedComponent('password');
@@ -156,6 +177,22 @@ const AdminDashboard = ({ handleLogout, encodedCredentials, username }) => {
               <FontAwesomeIcon icon={faDumpster} size="2x" />
               <span className="option-label">Delete Appointment</span>
             </button>
+            <button className="option-button admin" onClick={() => handleOptionClick('addPrescription')}>
+              <FontAwesomeIcon icon={faCalendarPlus} size="2x" />
+              <span className="option-label">Add Prescription</span>
+            </button>
+            <button className="option-button admin" onClick={() => handleOptionClick('updatePrescription')}>
+              <FontAwesomeIcon icon={faEdit} size="2x" />
+              <span className="option-label">Edit Prescription</span>
+            </button>
+            <button className="option-button admin" onClick={() => handleOptionClick('viewPrescriptionList')}>
+              <FontAwesomeIcon icon={faEye} size="2x" />
+              <span className="option-label">View Prescriptions</span>
+            </button>
+            <button className="option-button admin" onClick={() => handleOptionClick('deletePrescription')}>
+              <FontAwesomeIcon icon={faDumpster} size="2x" />
+              <span className="option-label">Delete Prescription</span>
+            </button>
             <button className="option-button admin" onClick={() => handleOptionClick('updatePassword')}>
               <FontAwesomeIcon icon={faKey} size="2x" />
               <span className="option-label">Update Password</span>
@@ -180,6 +217,10 @@ const AdminDashboard = ({ handleLogout, encodedCredentials, username }) => {
       {displayedComponent === 'password' && <UpdatePassword username={username} handleLogout={handleLogout} encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
       {displayedComponent === 'addPatient' && <AddPatientForm encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
       {displayedComponent === 'updatePatient' && <UpdatePatientForm encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'addPrescription' && <AddPrescriptionForm encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'updatePrescription' && <UpdatePrescriptionForm encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'viewPrescriptions' && <ViewPrescriptions encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
+      {displayedComponent === 'deletePrescription' && <DeletePrescription encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
       {displayedComponent === 'deletePatient' && <DeletePatient encodedCredentials={encodedCredentials} handleBack={handleBack}/>}
     </div>
   );
